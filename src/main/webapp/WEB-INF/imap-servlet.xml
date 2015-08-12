@@ -10,8 +10,12 @@
 
 	<context:annotation-config/>
 
-	<context:component-scan base-package="com.imap.controllers"/>
+	<!--JSR-303 (Bean validation) support will be detected on classpath and enabled automatically-->
+	<mvc:annotation-driven />
 
-	<!--<mvc:default-servlet-handler/>-->
+	<!--This tag allows for mapping the DispatcherServlet to "/" (all extensions etc)-->
+	<mvc:default-servlet-handler/>
+
+	<context:component-scan base-package="com.imap.controllers"/>
 
 </beans>
