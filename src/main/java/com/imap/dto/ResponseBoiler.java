@@ -3,7 +3,7 @@ package com.imap.dto;
 import java.io.Serializable;
 
 /**
- * Created by Boris Finkelshtein.
+ * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 public class ResponseBoiler implements Serializable{
 
