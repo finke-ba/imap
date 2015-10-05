@@ -8,29 +8,13 @@ import java.io.Serializable;
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class Boiler implements Serializable {
-
-	private Integer id;
-
-	private Integer status;
+public class BoilerTown implements Serializable {
 
 	private String name;
 
-	public Integer getId() {
-		return id;
-	}
+	private String address;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+	private String readings;
 
 	public String getName() {
 		return name;

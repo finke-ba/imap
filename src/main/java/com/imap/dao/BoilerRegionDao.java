@@ -1,14 +1,14 @@
 package com.imap.dao;
 
-import com.imap.domain.Boiler;
+import com.imap.domain.BoilerRegion;
 
 import java.util.List;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public interface BoilerDao {
+public interface BoilerRegionDao {
 
-	Boiler getBoiler(Integer id);
+	List<BoilerRegion> getBoilers();
 
 }

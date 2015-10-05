@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -19,16 +18,18 @@ public class BoilerDaoImpl extends AbstractDao implements BoilerDao, RowMapper<B
 			" tw.id," +
 			" tw.city" +
 			" FROM" +
-			" towns tw;";
+			" towns tw" +
+			" WHERE" +
+			" tw.id =?;";
 
-	public List<Boiler> getBoilers() {
-		return getJdbcTemplate().query(SQL_GET_BOILERS, this);
+	public Boiler getBoiler(Integer id) {
+		return getJdbcTemplate().queryForObject(SQL_GET_BOILERS, this, id);
 	}
 
-	public Boiler mapRow(ResultSet resultSet, int i) throws SQLException {
+	public Boiler mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Boiler boiler = new Boiler();
-		boiler.setId(resultSet.getInt("id"));
-		boiler.setName(resultSet.getString("city"));
+		boiler.setId(rs.getInt("id"));
+		boiler.setName(rs.getString("city"));
 		return boiler;
 	}
 }

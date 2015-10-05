@@ -8,13 +8,11 @@ import java.io.Serializable;
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class Boiler implements Serializable {
+public class BoilerRegion implements Serializable {
 
 	private Integer id;
 
 	private Integer status;
-
-	private String name;
 
 	public Integer getId() {
 		return id;
@@ -30,13 +28,5 @@ public class Boiler implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }
