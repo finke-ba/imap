@@ -25,7 +25,4 @@ public class BoilerService {
 		return new ResponseBoiler(boiler);
 	}
 
-	public void setBoilerDao(BoilerDao boilerDao) {
-		this.boilerDao = boilerDao;
-	}
 }
