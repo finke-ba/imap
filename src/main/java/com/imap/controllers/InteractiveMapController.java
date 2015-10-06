@@ -35,7 +35,7 @@ public class InteractiveMapController {
 	}
 
 	@RequestMapping(value = "/get/boiler", method = RequestMethod.GET)
-	public Boiler getBoiler(@RequestParam int id) {
+	public List<Boiler> getBoiler(@RequestParam int id) {
 		return boilerService.getBoiler(id);
 	}
 

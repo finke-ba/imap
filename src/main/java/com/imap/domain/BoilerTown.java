@@ -23,4 +23,20 @@ public class BoilerTown implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getReadings() {
+		return readings;
+	}
+
+	public void setReadings(String readings) {
+		this.readings = readings;
+	}
 }

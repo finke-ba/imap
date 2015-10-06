@@ -3,6 +3,7 @@ package com.imap.domain;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -10,33 +11,43 @@ import java.io.Serializable;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Boiler implements Serializable {
 
-	private Integer id;
+	private String paramName;
 
-	private Integer status;
+	private Integer paramValue;
 
-	private String name;
+	private Date date;
 
-	public Integer getId() {
-		return id;
+	private String reason;
+
+	public String getParamName() {
+		return paramName;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public Integer getParamValue() {
+		return paramValue;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setParamValue(Integer paramValue) {
+		this.paramValue = paramValue;
 	}
 
-	public String getName() {
-		return name;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 }

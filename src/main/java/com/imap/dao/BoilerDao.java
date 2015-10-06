@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface BoilerDao {
 
-	Boiler getBoiler(Integer id);
+	List<Boiler> getBoiler(Integer id);
 
 }
