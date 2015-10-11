@@ -21,16 +21,16 @@ public class BoilerDaoImpl extends AbstractDao implements BoilerDao, RowMapper<B
 			" boiler b" +
 			" JOIN" +
 			" (" +
-			" SELECT" +
-			" s.ID_CO, s.Boiler_ID, apv.Par_Value, apv.Par_Name, apv.Date_Time" +
-			" FROM" +
-			" sensors s" +
-			" JOIN" +
-			" (" +
-			" SELECT *" +
-			" FROM actual_param_values" +
-			" ) AS apv" +
-			" ON s.ID_CO = apv.ID_CO" +
+				" SELECT" +
+				" s.ID_CO, s.Boiler_ID, apv.Par_Value, apv.Par_Name, apv.Date_Time" +
+				" FROM" +
+				" sensors s" +
+				" JOIN" +
+				" (" +
+					" SELECT *" +
+					" FROM actual_param_values" +
+				" ) AS apv" +
+				" ON s.ID_CO = apv.ID_CO" +
 			" ) AS s_apv" +
 			" ON b.ID = s_apv.Boiler_ID" +
 			" WHERE Boiler_ID=? AND (Par_Name='T01' OR Par_Name='T02' OR Par_Name='T03')" +

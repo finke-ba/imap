@@ -6,10 +6,11 @@ import com.imap.dao.BoilerTownDao;
 import com.imap.domain.Boiler;
 import com.imap.domain.BoilerRegion;
 import com.imap.domain.BoilerTown;
-import com.imap.dto.ResponseBoiler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,18 +28,78 @@ public class BoilerService {
 	@Autowired
 	private BoilerDao boilerDao;
 
-	private final double xt = 8;
+	private final static double XT = 8;
+
+	private final static Integer PARAM_STATUS_GREEN = 1;
+
+	private final static Integer PARAM_STATUS_YELLOW = 2;
+
+	private final static Integer PARAM_STATUS_RED = 3;
+
+	private final static Integer NULL_BOILER_ID = 0;
 
 	public List<BoilerRegion> getBoilersForRegion() {
 		return boilerRegionDao.getBoilers();
 	}
 
 	public List<BoilerTown> getBoilersForTown(Integer id) {
-		return boilerTownDao.getBoilers(id);
+		return CheckBoilerForTown(boilerTownDao.getBoilers(id));
 	}
 
 	public List<Boiler> getBoiler(int id) {
 		return CheckBoiler(boilerDao.getBoiler(id));
+	}
+
+	private List<BoilerTown> CheckBoilerForTown(List<BoilerTown> boilers) {
+
+		Double y1 = 2.2294 * (8 - XT) + 52.386;
+		Double y2 = 0.7748 * (8 - XT) + 36.386;
+		Double y3 = 1.2294 * (8 - XT) + 41.386;
+
+		List<BoilerTown> result = new ArrayList<>();
+
+		int index = 0;
+		for (BoilerTown boiler : boilers) {
+			if( boiler.getParamValue().equals(NULL_BOILER_ID)) {
+				BoilerTown boilerTown = new BoilerTown();
+				boilerTown.setBoilerId(boiler.getBoilerId());
+				boilerTown.setName(boiler.getName());
+				boilerTown.setAddress(boiler.getAddress());
+				boilerTown.setParamStatus(String.format("Снятие показаний не производится"));
+				boilerTown.setParamStatusId(PARAM_STATUS_YELLOW);
+				result.add(boilerTown);
+				index++;
+			}
+		}
+
+		List<BoilerTown> boilersWithoutNotCheckedBoiler = boilers.subList(index, boilers.size());
+
+
+		for (int i = 0; i<boilersWithoutNotCheckedBoiler.size(); i = i +3) {
+			BoilerTown boilerTown = new BoilerTown();
+			BoilerTown boilerTown1 = boilersWithoutNotCheckedBoiler.get(i);
+			BoilerTown boilerTown2 = boilersWithoutNotCheckedBoiler.get(i + 1);
+			BoilerTown boilerTown3 = boilersWithoutNotCheckedBoiler.get(i + 2);
+
+			boilerTown.setBoilerId(boilerTown1.getBoilerId());
+			boilerTown.setName(boilerTown1.getName());
+			boilerTown.setAddress(boilerTown1.getAddress());
+
+			if ((boilerTown1.getParamValue() >= (y1 - 10) && boilerTown1.getParamValue() <= (y1 + 10))
+					|| (boilerTown2.getParamValue() >= (y2 - 10) && boilerTown2.getParamValue() <= (y2 + 10))
+					|| (boilerTown3.getParamValue() >= (y3 - 10) && boilerTown3.getParamValue() <= (y3 + 10))) {
+				boilerTown.setParamStatus(String.format("Показания в рамках допустимых пределов"));
+				boilerTown.setParamStatusId(PARAM_STATUS_GREEN);
+			} else {
+				boilerTown.setParamStatus(String.format("Показания вышли за допустимые пределы"));
+				boilerTown.setParamStatusId(PARAM_STATUS_RED);
+			}
+
+			result.add(boilerTown);
+		}
+
+		Collections.sort(result, (o1, o2) -> o1.getBoilerId().compareTo(o2.getBoilerId()));
+		return result;
 	}
 
 	private List<Boiler> CheckBoiler(List<Boiler> boilers) {
@@ -46,9 +107,9 @@ public class BoilerService {
 		Boiler boiler2 = boilers.get(1);
 		Boiler boiler3 = boilers.get(2);
 
-		Double y1 = 2.2294 * (8 - xt) + 52.386;
-		Double y2 = 0.7748 * (8 - xt) + 36.386;
-		Double y3 = 1.2294 * (8 - xt) + 41.386;
+		Double y1 = 2.2294 * (8 - XT) + 52.386;
+		Double y2 = 0.7748 * (8 - XT) + 36.386;
+		Double y3 = 1.2294 * (8 - XT) + 41.386;
 
 		if ( !(boiler1.getParamValue() >= (y1 - 10) && boiler1.getParamValue() <= (y1 + 10)) ){
 //			boiler1.setParamValue(y1.intValue());

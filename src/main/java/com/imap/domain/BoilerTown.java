@@ -14,7 +14,13 @@ public class BoilerTown implements Serializable {
 
 	private String address;
 
-	private String readings;
+	private Integer paramValue;
+
+	private Integer boilerId;
+
+	private String paramStatus;
+
+	private Integer paramStatusId;
 
 	public String getName() {
 		return name;
@@ -32,11 +38,35 @@ public class BoilerTown implements Serializable {
 		this.address = address;
 	}
 
-	public String getReadings() {
-		return readings;
+	public Integer getParamValue() {
+		return paramValue;
 	}
 
-	public void setReadings(String readings) {
-		this.readings = readings;
+	public Integer getBoilerId() {
+		return boilerId;
+	}
+
+	public void setBoilerId(Integer boilerId) {
+		this.boilerId = boilerId;
+	}
+
+	public void setParamValue(Integer paramValue) {
+		this.paramValue = paramValue;
+	}
+
+	public String getParamStatus() {
+		return paramStatus;
+	}
+
+	public void setParamStatus(String paramStatus) {
+		this.paramStatus = paramStatus;
+	}
+
+	public Integer getParamStatusId() {
+		return paramStatusId;
+	}
+
+	public void setParamStatusId(Integer paramStatusId) {
+		this.paramStatusId = paramStatusId;
 	}
 }
