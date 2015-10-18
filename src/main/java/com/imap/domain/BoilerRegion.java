@@ -1,12 +1,16 @@
 package com.imap.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
+@Getter
+@Setter
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class BoilerRegion implements Serializable {
 
@@ -18,15 +22,4 @@ public class BoilerRegion implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
 }

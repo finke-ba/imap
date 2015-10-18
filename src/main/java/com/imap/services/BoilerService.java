@@ -2,8 +2,10 @@ package com.imap.services;
 
 import com.imap.dao.BoilerDao;
 import com.imap.dao.BoilerRegionDao;
+import com.imap.repository.BoilerRepository;
 import com.imap.dao.BoilerTownDao;
 import com.imap.domain.Boiler;
+import com.imap.domain.BoilerNew;
 import com.imap.domain.BoilerRegion;
 import com.imap.domain.BoilerTown;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class BoilerService {
 
 	@Autowired
 	private BoilerDao boilerDao;
+
+	@Autowired
+	private BoilerRepository boilerRepository;
 
 	private final static double XT = 8;
 
@@ -133,4 +138,7 @@ public class BoilerService {
 		return boilers;
 	}
 
+	public List<BoilerNew> getBoilerNew(int id) {
+		return boilerRepository.findById(id);
+	}
 }

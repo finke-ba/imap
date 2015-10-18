@@ -1,6 +1,8 @@
 package com.imap.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -8,6 +10,8 @@ import java.sql.Date;
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
+@Getter
+@Setter
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Boiler implements Serializable {
 
@@ -18,36 +22,4 @@ public class Boiler implements Serializable {
 	private Date date;
 
 	private String reason;
-
-	public String getParamName() {
-		return paramName;
-	}
-
-	public void setParamName(String paramName) {
-		this.paramName = paramName;
-	}
-
-	public Integer getParamValue() {
-		return paramValue;
-	}
-
-	public void setParamValue(Integer paramValue) {
-		this.paramValue = paramValue;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getReason() {
-		return reason;
-	}
-
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
 }

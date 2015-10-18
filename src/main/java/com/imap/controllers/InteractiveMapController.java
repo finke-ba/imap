@@ -1,6 +1,7 @@
 package com.imap.controllers;
 
 import com.imap.domain.Boiler;
+import com.imap.domain.BoilerNew;
 import com.imap.domain.BoilerRegion;
 import com.imap.domain.BoilerTown;
 import com.imap.dto.ResponseBoiler;
@@ -37,6 +38,11 @@ public class InteractiveMapController {
 	@RequestMapping(value = "/get/boiler", method = RequestMethod.GET)
 	public List<Boiler> getBoiler(@RequestParam int id) {
 		return boilerService.getBoiler(id);
+	}
+
+	@RequestMapping(value = "/get/boilerNew", method = RequestMethod.GET)
+	public List<BoilerNew> getBoilerNew(@RequestParam int id) {
+		return boilerService.getBoilerNew(id);
 	}
 
 }
