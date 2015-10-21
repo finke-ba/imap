@@ -1,13 +1,11 @@
 package com.imap.controllers;
 
-import com.imap.domain.Boiler;
-import com.imap.domain.BoilerNew;
-import com.imap.domain.BoilerRegion;
-import com.imap.domain.BoilerTown;
-import com.imap.dto.ResponseBoiler;
+import com.imap.domain.jpa.Boiler;
+import com.imap.domain.jdbc.BoilerRegion;
+import com.imap.domain.jdbc.BoilerTown;
+import com.imap.domain.jpa.ControlObjects;
 import com.imap.services.BoilerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,13 +34,19 @@ public class InteractiveMapController {
 	}
 
 	@RequestMapping(value = "/get/boiler", method = RequestMethod.GET)
-	public List<Boiler> getBoiler(@RequestParam int id) {
+	public List<com.imap.domain.jdbc.Boiler> getBoiler(@RequestParam int id) {
 		return boilerService.getBoiler(id);
 	}
 
-	@RequestMapping(value = "/get/boilerNew", method = RequestMethod.GET)
-	public List<BoilerNew> getBoilerNew(@RequestParam int id) {
+	@RequestMapping(value = "/get/boiler/new", method = RequestMethod.GET)
+	public List<ControlObjects> getBoilerNew(@RequestParam int id) {
 		return boilerService.getBoilerNew(id);
 	}
+
+	@RequestMapping(value = "/get/boilers/town/new", method = RequestMethod.GET)
+	public List<ControlObjects> getBoilersForTownNew(@RequestParam int id) {
+		return boilerService.getBoilersForTownNew(id);
+	}
+
 
 }

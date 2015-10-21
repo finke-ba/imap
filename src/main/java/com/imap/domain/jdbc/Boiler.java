@@ -1,10 +1,11 @@
-package com.imap.domain;
+package com.imap.domain.jdbc;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -12,18 +13,13 @@ import java.io.Serializable;
 @Getter
 @Setter
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class BoilerTown implements Serializable {
+public class Boiler implements Serializable {
 
-	private String name;
-
-	private String address;
+	private String paramName;
 
 	private Integer paramValue;
 
-	private Integer boilerId;
+	private Date date;
 
-	private String paramStatus;
-
-	private Integer paramStatusId;
-
+	private String reason;
 }

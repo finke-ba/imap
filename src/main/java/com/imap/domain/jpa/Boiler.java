@@ -1,11 +1,13 @@
-package com.imap.domain;
+package com.imap.domain.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -16,15 +18,16 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "BOILER")
-public class BoilerNew implements Serializable {
+public class Boiler implements Serializable {
 
 	@Id
 	private Integer id;
 
 	private String name;
 
-	@JoinColumn(name = "TOWNS")
-	private Integer town;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "TOWN")
+	private Town town;
 
 	private String address;
 

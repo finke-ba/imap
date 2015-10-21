@@ -1,6 +1,6 @@
 package com.imap.dao;
 
-import com.imap.domain.BoilerTown;
+import com.imap.domain.jdbc.BoilerTown;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.imap.domain;
+package com.imap.domain.jpa;
 
 import lombok.Getter;
 import lombok.Setter;

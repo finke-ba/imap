@@ -2,12 +2,12 @@ package com.imap.services;
 
 import com.imap.dao.BoilerDao;
 import com.imap.dao.BoilerRegionDao;
+import com.imap.domain.jpa.ControlObjects;
 import com.imap.repository.BoilerRepository;
 import com.imap.dao.BoilerTownDao;
-import com.imap.domain.Boiler;
-import com.imap.domain.BoilerNew;
-import com.imap.domain.BoilerRegion;
-import com.imap.domain.BoilerTown;
+import com.imap.domain.jdbc.BoilerRegion;
+import com.imap.domain.jdbc.BoilerTown;
+import com.imap.repository.ControlObjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +33,9 @@ public class BoilerService {
 	@Autowired
 	private BoilerRepository boilerRepository;
 
+	@Autowired
+	private ControlObjectsRepository controlObjectsRepository;
+
 	private final static double XT = 8;
 
 	private final static Integer PARAM_STATUS_GREEN = 1;
@@ -51,7 +54,7 @@ public class BoilerService {
 		return CheckBoilerForTown(boilerTownDao.getBoilers(id));
 	}
 
-	public List<Boiler> getBoiler(int id) {
+	public List<com.imap.domain.jdbc.Boiler> getBoiler(int id) {
 		return CheckBoiler(boilerDao.getBoiler(id));
 	}
 
@@ -107,10 +110,10 @@ public class BoilerService {
 		return result;
 	}
 
-	private List<Boiler> CheckBoiler(List<Boiler> boilers) {
-		Boiler boiler1 = boilers.get(0);
-		Boiler boiler2 = boilers.get(1);
-		Boiler boiler3 = boilers.get(2);
+	private List<com.imap.domain.jdbc.Boiler> CheckBoiler(List<com.imap.domain.jdbc.Boiler> boilers) {
+		com.imap.domain.jdbc.Boiler boiler1 = boilers.get(0);
+		com.imap.domain.jdbc.Boiler boiler2 = boilers.get(1);
+		com.imap.domain.jdbc.Boiler boiler3 = boilers.get(2);
 
 		Double y1 = 2.2294 * (8 - XT) + 52.386;
 		Double y2 = 0.7748 * (8 - XT) + 36.386;
@@ -138,7 +141,11 @@ public class BoilerService {
 		return boilers;
 	}
 
-	public List<BoilerNew> getBoilerNew(int id) {
-		return boilerRepository.findById(id);
+	public List<ControlObjects> getBoilerNew(int id) {
+		return controlObjectsRepository.findByBoilerId(id);
+	}
+
+	public List<ControlObjects> getBoilersForTownNew(int id) {
+		return controlObjectsRepository.findByTownId(id);
 	}
 }

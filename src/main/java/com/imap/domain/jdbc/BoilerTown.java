@@ -1,4 +1,4 @@
-package com.imap.domain;
+package com.imap.domain.jdbc;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
@@ -12,14 +12,18 @@ import java.io.Serializable;
 @Getter
 @Setter
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class BoilerRegion implements Serializable {
+public class BoilerTown implements Serializable {
 
-	private Integer id;
+	private String name;
 
-	private Integer status;
+	private String address;
 
-	public Integer getId() {
-		return id;
-	}
+	private Integer paramValue;
+
+	private Integer boilerId;
+
+	private String paramStatus;
+
+	private Integer paramStatusId;
 
 }

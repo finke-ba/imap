@@ -1,6 +1,6 @@
 package com.imap.dao;
 
-import com.imap.domain.Boiler;
+import com.imap.domain.jdbc.Boiler;
 
 import java.util.List;
 

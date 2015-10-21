@@ -1,7 +1,7 @@
 package com.imap.dao.jdbc;
 
 import com.imap.dao.BoilerTownDao;
-import com.imap.domain.BoilerTown;
+import com.imap.domain.jdbc.BoilerTown;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
