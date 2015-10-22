@@ -9,17 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -28,7 +25,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "CONTROL_OBJECTS")
-public class ControlObjects implements Serializable {
+public class ControlObject implements Serializable {
 
 	@Id
 	private Integer id;
@@ -60,5 +57,5 @@ public class ControlObjects implements Serializable {
 //	@JoinTable(name = "ACTUAL_PARAM_VALUES",
 //			joinColumns = @JoinColumn(name = "ID_CO"))
 	@JoinColumn(name = "ID_CO")
-	private List<ActualParamValues> actualParamValues;
+	private List<ActualParamValue> actualParamValues;
 }

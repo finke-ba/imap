@@ -3,8 +3,9 @@ package com.imap.controllers;
 import com.imap.domain.jpa.Boiler;
 import com.imap.domain.jdbc.BoilerRegion;
 import com.imap.domain.jdbc.BoilerTown;
-import com.imap.domain.jpa.ControlObjects;
+import com.imap.domain.jpa.ControlObject;
 import com.imap.services.BoilerService;
+import com.imap.uivo.BoilerUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,18 +40,23 @@ public class InteractiveMapController {
 	}
 
 	@RequestMapping(value = "/get/boiler/new", method = RequestMethod.GET)
-	public List<ControlObjects> getBoilerNew(@RequestParam int id) {
+	public List<ControlObject> getBoilerNew(@RequestParam int id) {
 		return boilerService.getBoilerNew(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/town/new", method = RequestMethod.GET)
-	public List<ControlObjects> getBoilersForTownNew(@RequestParam int id) {
+	public List<ControlObject> getBoilersForTownNew(@RequestParam int id) {
 		return boilerService.getBoilersForTownNew(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/region/new", method = RequestMethod.GET)
-	public List<ControlObjects> getBoilersForRegionNew() {
+	public List<ControlObject> getBoilersForRegionNew() {
 		return boilerService.getBoilersForRegionNew();
+	}
+
+	@RequestMapping(value = "/get/boiler/check/new", method = RequestMethod.GET)
+	public List<List<BoilerUIVO>> getBoilerCheckNew(@RequestParam int id) {
+		return boilerService.getBoilerCheckNew(id);
 	}
 
 

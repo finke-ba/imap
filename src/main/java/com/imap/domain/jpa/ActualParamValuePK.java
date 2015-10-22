@@ -10,12 +10,12 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class ActualParamValuesPK implements Serializable {
+public class ActualParamValuePK implements Serializable {
 
 	private Integer idControlObject;
 
 	private Integer idParamDescription;
 
-	public ActualParamValuesPK() {
+	public ActualParamValuePK() {
 	}
 }
