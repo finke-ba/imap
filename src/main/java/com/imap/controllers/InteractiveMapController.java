@@ -48,5 +48,10 @@ public class InteractiveMapController {
 		return boilerService.getBoilersForTownNew(id);
 	}
 
+	@RequestMapping(value = "/get/boilers/region/new", method = RequestMethod.GET)
+	public List<ControlObjects> getBoilersForRegionNew() {
+		return boilerService.getBoilersForRegionNew();
+	}
+
 
 }

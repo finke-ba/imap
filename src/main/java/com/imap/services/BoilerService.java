@@ -148,4 +148,8 @@ public class BoilerService {
 	public List<ControlObjects> getBoilersForTownNew(int id) {
 		return controlObjectsRepository.findByTownId(id);
 	}
+
+	public List<ControlObjects> getBoilersForRegionNew() {
+		return controlObjectsRepository.findAll();
+	}
 }
