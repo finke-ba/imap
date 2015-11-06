@@ -1,10 +1,8 @@
 package com.imap.uivo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,8 +10,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class BoilerUIVO implements Serializable {
+public class BoilerUIVO extends UIVO {
 
 	private String paramName;
 
@@ -21,5 +18,5 @@ public class BoilerUIVO implements Serializable {
 
 	private Date date;
 
-	private String reason;
+//	private String reason;
 }

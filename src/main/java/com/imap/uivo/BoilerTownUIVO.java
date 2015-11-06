@@ -1,18 +1,14 @@
 package com.imap.uivo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter
 @Setter
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class BoilerTownUIVO implements Serializable {
+public class BoilerTownUIVO extends UIVO {
 
 	private String name;
 
@@ -21,9 +17,5 @@ public class BoilerTownUIVO implements Serializable {
 	private Integer paramValue;
 
 	private Integer boilerId;
-
-	private String paramStatus;
-
-	private Integer paramStatusId;
 
 }

@@ -9,6 +9,8 @@ import com.imap.dao.BoilerTownDao;
 import com.imap.domain.jdbc.BoilerRegion;
 import com.imap.domain.jdbc.BoilerTown;
 import com.imap.repository.ControlObjectRepository;
+import com.imap.uivo.UIVO;
+import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ import java.util.List;
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
-public class BoilerService {
+public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 
 	@Autowired
 	private BoilerRegionDao boilerRegionDao;
@@ -32,34 +34,7 @@ public class BoilerService {
 	@Autowired
 	private BoilerDao boilerDao;
 
-	@Autowired
-	private BoilerRepository boilerRepository;
-
-	@Autowired
-	private ControlObjectRepository controlObjectRepository;
-
-	private final static double XT = 8;
-
-	private final static Integer PARAM_STATUS_GREEN = 1;
-
-	private final static Integer PARAM_STATUS_YELLOW = 2;
-
-	private final static Integer PARAM_STATUS_RED = 3;
-
 	private final static Integer NULL_BOILER_ID = 0;
-
-	private static final Integer ID_PD_T1 = 510;
-
-	private static final Integer ID_PD_T2 = 515;
-
-	private static final Integer ID_PD_T3 = 520;
-
-	public static final Double Y1 = 2.2294 * (8 - XT) + 52.386;
-
-	public static final Double Y2 = 0.7748 * (8 - XT) + 36.386;
-
-	public static final Double Y3 = 1.2294 * (8 - XT) + 41.386;
-
 
 	public List<BoilerRegion> getBoilersForRegion() {
 		return boilerRegionDao.getBoilers();
@@ -156,35 +131,17 @@ public class BoilerService {
 		return boilers;
 	}
 
-	public List<ControlObject> getBoilerNew(int id) {
-		return controlObjectRepository.findByBoilerId(id);
-	}
-
-	public List<ControlObject> getBoilersForTownNew(int id) {
-		return controlObjectRepository.findByTownId(id);
-	}
-
-	public List<ControlObject> getBoilersForRegionNew() {
-		return controlObjectRepository.findAll();
-	}
-
 	public List<List<BoilerUIVO>> getBoilerCheckNew(int id) {
 		return CheckBoilerNew(controlObjectRepository.findByBoilerId(id));
 	}
 
-	private List<List<BoilerUIVO>> CheckBoilerNew(List<ControlObject> controlObjectsForBoiler) {
-		List<List<BoilerUIVO>> boilerListUIVO = new ArrayList<>();
-		for (ControlObject controlObject : controlObjectsForBoiler) {
-			boilerListUIVO.add(checkBoilerControlObject(controlObject));
-		}
-		return boilerListUIVO;
-	}
-
-	private List<BoilerUIVO> checkBoilerControlObject(ControlObject controlObject) {
-		List<BoilerUIVO> boilersUIVO = new ArrayList<BoilerUIVO>();
+	@Override
+	public List<BoilerUIVO> checkBoilerControlObject(ControlObject controlObject) {
+		List<BoilerUIVO> boilersUIVO = new ArrayList<>();
 		List<ActualParamValue> actualParamValues = controlObject.getActualParamValues();
+
 		for (ActualParamValue actualParamValue : actualParamValues) {
-			if (ID_PD_T1.equals(actualParamValue.getIdParamDescription())){
+			if (ID_PD_T1.equals(actualParamValue.getIdParamDescription())) {
 				boilersUIVO.add(checkParamValue(actualParamValue, Y1));
 			} else if (ID_PD_T2.equals(actualParamValue.getIdParamDescription())) {
 				boilersUIVO.add(checkParamValue(actualParamValue, Y2));
@@ -196,20 +153,20 @@ public class BoilerService {
 		return boilersUIVO;
 	}
 
-	private BoilerUIVO checkParamValue(ActualParamValue actualParamValue, Double y) {
+	@Override
+	public BoilerUIVO checkParamValue(ActualParamValue actualParamValue, Double y) {
 		BoilerUIVO boilerUIVO = new BoilerUIVO();
+
+		UIVO uivo = super.checkParamValue(actualParamValue, y);
 
 		boilerUIVO.setParamName(actualParamValue.getParName());
 		boilerUIVO.setDate(actualParamValue.getDateTime());
 		boilerUIVO.setParamValue(actualParamValue.getParValue());
-
-		if ( !(Double.parseDouble(actualParamValue.getParValue()) >= (y - 10)) &&
-				!(Double.parseDouble(actualParamValue.getParValue()) <= (y + 10)) ){
-			boilerUIVO.setReason(String.format("Показания вышли за пределы +/- 10°C %s", y.toString()));
-		} else {
-			boilerUIVO.setReason(String.format("Предел %s", y.toString()));
-		}
+		boilerUIVO.setParamStatus(uivo.getParamStatus());
+		boilerUIVO.setParamStatusId(uivo.getParamStatusId());
 
 		return boilerUIVO;
 	}
+
+
 }
