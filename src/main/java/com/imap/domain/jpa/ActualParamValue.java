@@ -31,7 +31,7 @@ public class ActualParamValue implements Serializable {
 	private String parValue;
 
 	@Column(name = "Date_Time")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateTime;
 
 	@Id

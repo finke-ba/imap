@@ -27,6 +27,13 @@ public class BoilerRegionService extends AbstractBoilerService<BoilerRegionUIVO>
 		return CheckBoiler(controlObjectRepository.findAll());
 	}
 
+	public BoilerTownUIVO getTownById(Integer id) {
+		Town town = townRepository.findOne(id);
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		townUIVO.setName(town.getRu_city());
+		return townUIVO;
+	}
+
 
 	public List<BoilerRegionUIVO> CheckBoiler(List<ControlObject> controlObjectsForBoiler) {
 		List<Town> towns = townRepository.findAll();

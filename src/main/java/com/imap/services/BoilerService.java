@@ -3,6 +3,7 @@ package com.imap.services;
 import com.imap.dao.BoilerDao;
 import com.imap.dao.BoilerRegionDao;
 import com.imap.domain.jpa.ActualParamValue;
+import com.imap.domain.jpa.Boiler;
 import com.imap.domain.jpa.ControlObject;
 import com.imap.repository.BoilerRepository;
 import com.imap.dao.BoilerTownDao;
@@ -169,4 +170,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 	}
 
 
+	public Boiler getBoilerNew(int id) {
+		return boilerRepository.findOne(id);
+	}
 }

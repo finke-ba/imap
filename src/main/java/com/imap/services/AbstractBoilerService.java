@@ -44,7 +44,7 @@ public abstract class AbstractBoilerService <U extends UIVO> {
 	public static final Integer ID_PD_T3 = 520;
 
 
-	public List<ControlObject> getBoilerNew(int id) {
+	public List<ControlObject> getBoilerCONew(int id) {
 		return controlObjectRepository.findByBoilerId(id);
 	}
 

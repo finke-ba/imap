@@ -1,8 +1,8 @@
 package com.imap.controllers;
 
-import com.imap.domain.jpa.Boiler;
 import com.imap.domain.jdbc.BoilerRegion;
 import com.imap.domain.jdbc.BoilerTown;
+import com.imap.domain.jpa.Boiler;
 import com.imap.domain.jpa.ControlObject;
 import com.imap.services.BoilerRegionService;
 import com.imap.services.BoilerService;
@@ -49,9 +49,9 @@ public class InteractiveMapController {
 		return boilerService.getBoiler(id);
 	}
 
-	@RequestMapping(value = "/get/boiler/new", method = RequestMethod.GET)
-	public List<ControlObject> getBoilerNew(@RequestParam int id) {
-		return boilerService.getBoilerNew(id);
+	@RequestMapping(value = "/get/boilerCO/new", method = RequestMethod.GET)
+	public List<ControlObject> getBoilerCONew(@RequestParam int id) {
+		return boilerService.getBoilerCONew(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/town/new", method = RequestMethod.GET)
@@ -77,6 +77,16 @@ public class InteractiveMapController {
 	@RequestMapping(value = "/get/boilers/region/check/new", method = RequestMethod.GET)
 	public List<BoilerRegionUIVO> getBoilersForRegionCheckNew() {
 		return boilerRegionService.getBoilersForRegionCheckNew();
+	}
+
+	@RequestMapping(value = "/get/boilers/town/name/new", method = RequestMethod.GET)
+	public BoilerTownUIVO getTownNameNew(@RequestParam int id) {
+		return boilerRegionService.getTownById(id);
+	}
+
+	@RequestMapping(value = "/get/boiler/new", method = RequestMethod.GET)
+	public Boiler getBoilerNew(@RequestParam int id) {
+		return boilerService.getBoilerNew(id);
 	}
 
 
