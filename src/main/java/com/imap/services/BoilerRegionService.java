@@ -20,22 +20,12 @@ import java.util.List;
 @Service
 public class BoilerRegionService extends AbstractBoilerService<BoilerRegionUIVO> {
 
-	@Autowired
-	TownRepository townRepository;
-
-	public List<BoilerRegionUIVO> getBoilersForRegionCheckNew() {
-		return CheckBoiler(controlObjectRepository.findAll());
-	}
-
-	public BoilerTownUIVO getTownById(Integer id) {
-		Town town = townRepository.findOne(id);
-		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
-		townUIVO.setName(town.getRu_city());
-		return townUIVO;
+	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
+		return checkBoiler(controlObjectRepository.findAll());
 	}
 
 
-	public List<BoilerRegionUIVO> CheckBoiler(List<ControlObject> controlObjectsForBoiler) {
+	public List<BoilerRegionUIVO> checkBoiler(List<ControlObject> controlObjectsForBoiler) {
 		List<Town> towns = townRepository.findAll();
 		List<BoilerRegionUIVO> boilerUIVOsList = new ArrayList<>();
 		for (ControlObject controlObject : controlObjectsForBoiler) {
@@ -43,13 +33,13 @@ public class BoilerRegionService extends AbstractBoilerService<BoilerRegionUIVO>
 		}
 		HashMap<Integer, BoilerRegionUIVO> hmTownsIds = new HashMap<>();
 		HashSet<Integer> hsTownsIds = new HashSet<>();
-		for (int i=0; i< towns.size(); i++) {
+		for (Town town : towns) {
 			BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
 			boilerRegionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
 			boilerRegionUIVO.setParamStatus("Показания в рамках допустимых пределов");
-			boilerRegionUIVO.setTownId(towns.get(i).getId());
-			hmTownsIds.put(towns.get(i).getId(), boilerRegionUIVO);
-			hsTownsIds.add(towns.get(i).getId());
+			boilerRegionUIVO.setTownId(town.getId());
+			hmTownsIds.put(town.getId(), boilerRegionUIVO);
+			hsTownsIds.add(town.getId());
 		}
 		for (BoilerRegionUIVO boilerRegionUIVO : boilerUIVOsList) {
 			if (PARAM_STATUS_RED.equals(boilerRegionUIVO.getParamStatusId())) {
@@ -57,18 +47,18 @@ public class BoilerRegionService extends AbstractBoilerService<BoilerRegionUIVO>
 			}
 			hsTownsIds.remove(boilerRegionUIVO.getTownId());
 		}
-		for (int i=0; i< towns.size(); i++) {
-			if (hsTownsIds.contains(towns.get(i).getId())) {
+		for (Town town : towns) {
+			if (hsTownsIds.contains(town.getId())) {
 				BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
 				boilerRegionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
 				boilerRegionUIVO.setParamStatus("Снятие показаний не производится");
-				boilerRegionUIVO.setTownId(towns.get(i).getId());
-				hmTownsIds.put(towns.get(i).getId(), boilerRegionUIVO);
+				boilerRegionUIVO.setTownId(town.getId());
+				hmTownsIds.put(town.getId(), boilerRegionUIVO);
 			}
 		}
 		List<BoilerRegionUIVO> resultList = new ArrayList<>();
-		for (int i=0; i< towns.size(); i++) {
-			BoilerRegionUIVO hmBoilerUIVO = hmTownsIds.get(towns.get(i).getId());
+		for (Town town : towns) {
+			BoilerRegionUIVO hmBoilerUIVO = hmTownsIds.get(town.getId());
 			BoilerRegionUIVO result = new BoilerRegionUIVO();
 			result.setTownId(hmBoilerUIVO.getTownId());
 			result.setParamStatusId(hmBoilerUIVO.getParamStatusId());

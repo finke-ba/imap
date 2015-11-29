@@ -2,6 +2,7 @@ package com.imap.services;
 
 import com.imap.domain.jpa.ActualParamValue;
 import com.imap.domain.jpa.ControlObject;
+import com.imap.domain.jpa.Town;
 import com.imap.uivo.BoilerTownUIVO;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 
-	public List<List<BoilerTownUIVO>> getBoilersForTownCheckNew(int id) {
+	public List<List<BoilerTownUIVO>> getBoilersForTownCheck(int id) {
 		return CheckBoilerNew(controlObjectRepository.findByTownId(id));
 	}
 
@@ -58,5 +59,11 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 		return boilersUIVO;
 	}
 
+	public BoilerTownUIVO getTownById(Integer id) {
+		Town town = townRepository.findOne(id);
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		townUIVO.setName(town.getRu_city());
+		return townUIVO;
+	}
 
 }

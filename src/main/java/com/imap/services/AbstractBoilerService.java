@@ -4,6 +4,7 @@ import com.imap.domain.jpa.ActualParamValue;
 import com.imap.domain.jpa.ControlObject;
 import com.imap.repository.BoilerRepository;
 import com.imap.repository.ControlObjectRepository;
+import com.imap.repository.TownRepository;
 import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
@@ -22,6 +23,9 @@ public abstract class AbstractBoilerService <U extends UIVO> {
 
 	@Autowired
 	protected ControlObjectRepository controlObjectRepository;
+
+	@Autowired
+	protected TownRepository townRepository;
 
 	public final static Integer PARAM_STATUS_GREEN = 1;
 

@@ -10,7 +10,7 @@
 			var boilerId = getUrlParameter('boilerId');
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boiler/new?id=" + boilerId
+				url: "http://localhost:8080/imap/get/boiler?id=" + boilerId
 			}).then(function(data) {
 				var boilerName = data.name;
 				var boilerAddress = data.address;
@@ -23,7 +23,7 @@
 			});
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boiler/check/new?id=" + boilerId
+				url: "http://localhost:8080/imap/get/boiler/check?id=" + boilerId
 			}).then(function(data) {
 				var trHTML ='';
 				$.each(data, function(i, item) {

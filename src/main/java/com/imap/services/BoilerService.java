@@ -45,7 +45,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 		return CheckBoilerForTown(boilerTownDao.getBoilers(id));
 	}
 
-	public List<com.imap.domain.jdbc.Boiler> getBoiler(int id) {
+	public List<com.imap.domain.jdbc.Boiler> getBoilerJdbc(int id) {
 		return CheckBoiler(boilerDao.getBoiler(id));
 	}
 
@@ -64,7 +64,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 				boilerTown.setBoilerId(boiler.getBoilerId());
 				boilerTown.setName(boiler.getName());
 				boilerTown.setAddress(boiler.getAddress());
-				boilerTown.setParamStatus(String.format("Снятие показаний не производится"));
+				boilerTown.setParamStatus("Снятие показаний не производится");
 				boilerTown.setParamStatusId(PARAM_STATUS_YELLOW);
 				result.add(boilerTown);
 				index++;
@@ -87,10 +87,10 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 			if ((boilerTown1.getParamValue() >= (y1 - 10) && boilerTown1.getParamValue() <= (y1 + 10))
 					|| (boilerTown2.getParamValue() >= (y2 - 10) && boilerTown2.getParamValue() <= (y2 + 10))
 					|| (boilerTown3.getParamValue() >= (y3 - 10) && boilerTown3.getParamValue() <= (y3 + 10))) {
-				boilerTown.setParamStatus(String.format("Показания в рамках допустимых пределов"));
+				boilerTown.setParamStatus("Показания в рамках допустимых пределов");
 				boilerTown.setParamStatusId(PARAM_STATUS_GREEN);
 			} else {
-				boilerTown.setParamStatus(String.format("Показания вышли за допустимые пределы"));
+				boilerTown.setParamStatus("Показания вышли за допустимые пределы");
 				boilerTown.setParamStatusId(PARAM_STATUS_RED);
 			}
 
@@ -132,7 +132,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 		return boilers;
 	}
 
-	public List<List<BoilerUIVO>> getBoilerCheckNew(int id) {
+	public List<List<BoilerUIVO>> getBoilerCheck(int id) {
 		return CheckBoilerNew(controlObjectRepository.findByBoilerId(id));
 	}
 
@@ -170,7 +170,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 	}
 
 
-	public Boiler getBoilerNew(int id) {
+	public Boiler getBoiler(int id) {
 		return boilerRepository.findOne(id);
 	}
 }

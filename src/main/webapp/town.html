@@ -10,7 +10,7 @@
 			var townId = getUrlParameter('townId');
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boilers/town/name/new?id="+townId
+				url: "http://localhost:8080/imap/get/town?id="+townId
 			}).then(function(data) {
 				var townName = data.name;
 				$('.breadcrumb li:nth-child(2)').text(townName);
@@ -18,7 +18,7 @@
 			});
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boilers/town/check/new?id="+townId
+				url: "http://localhost:8080/imap/get/boilers/town/check?id="+townId
 			}).then(function(data) {
 				var trHTML ='';
 //				$.each(data, function(i, item) {

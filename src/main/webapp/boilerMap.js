@@ -28,7 +28,7 @@ $(document).ready(function drow(){
 
 function updateTask(){
     $.ajax({
-        url: "http://localhost:8080/imap/get/boilers/region/check/new"
+        url: "http://localhost:8080/imap/get/boilers/region/check"
     }).then(function(data) {
         for (var i = 0; i < data.length; i++) {
             var counter = data[i];
