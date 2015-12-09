@@ -5,13 +5,10 @@ import com.imap.dao.BoilerRegionDao;
 import com.imap.domain.jpa.ActualParamValue;
 import com.imap.domain.jpa.Boiler;
 import com.imap.domain.jpa.ControlObject;
-import com.imap.repository.BoilerRepository;
 import com.imap.dao.BoilerTownDao;
 import com.imap.domain.jdbc.BoilerRegion;
 import com.imap.domain.jdbc.BoilerTown;
-import com.imap.repository.ControlObjectRepository;
 import com.imap.uivo.UIVO;
-import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,7 +130,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 	}
 
 	public List<List<BoilerUIVO>> getBoilerCheck(int id) {
-		return CheckBoilerNew(controlObjectRepository.findByBoilerId(id));
+		return checkBoilerNew(controlObjectRepository.findByBoilerId(id));
 	}
 
 	@Override

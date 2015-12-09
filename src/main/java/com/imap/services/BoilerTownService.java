@@ -16,7 +16,7 @@ import java.util.List;
 public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 
 	public List<List<BoilerTownUIVO>> getBoilersForTownCheck(int id) {
-		return CheckBoilerNew(controlObjectRepository.findByTownId(id));
+		return checkBoilerNew(controlObjectRepository.findByTownId(id));
 	}
 
 	@Override

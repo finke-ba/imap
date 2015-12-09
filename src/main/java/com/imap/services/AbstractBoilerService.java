@@ -61,7 +61,7 @@ public abstract class AbstractBoilerService <U extends UIVO> {
 	}
 
 
-	public List<List<U>> CheckBoilerNew(List<ControlObject> controlObjectsForBoiler) {
+	public List<List<U>> checkBoilerNew(List<ControlObject> controlObjectsForBoiler) {
 		List<List<U>> boilerUIVOsList = new ArrayList<>();
 		for (ControlObject controlObject : controlObjectsForBoiler) {
 			boilerUIVOsList.add(checkBoilerControlObject(controlObject));

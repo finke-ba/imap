@@ -15,7 +15,7 @@ public interface ControlObjectRepository extends JpaRepository<ControlObject, In
 
 	List<ControlObject> findByBoilerId(Integer id);
 
-	@Query("SELECT co from ControlObject co WHERE co.boiler.town.id = ?1")
+	@Query("SELECT co FROM ControlObject co WHERE co.boiler.town.id = ?1")
 	List<ControlObject> findByTownId(Integer id);
 
 }
