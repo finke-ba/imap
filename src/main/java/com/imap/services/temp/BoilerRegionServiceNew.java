@@ -1,5 +1,7 @@
 package com.imap.services.temp;
 
+import com.imap.dao.BoilersAPVDao;
+import com.imap.domain.jdbc.BoilerAPV;
 import com.imap.domain.jpa.Town;
 import com.imap.repository.ControlObjectRepository;
 import com.imap.repository.TownRepository;
@@ -10,6 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.imap.services.BoilerTownService.*;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -24,14 +30,21 @@ public class BoilerRegionServiceNew {
 	protected TownRepository townRepository;
 
 	@Autowired
-	BoilerTownServiceNew boilerTownService;
+	private BoilerTownServiceNew boilerTownService;
+
+	@Autowired
+	private BoilersAPVDao boilersAPVDao;
 
 	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
+
+		Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
+		townMap.get(0);
+
 		List<BoilerRegionUIVO> regionUIVOs = new ArrayList<>();
 		List<Town> towns = townRepository.findAll();
-		for (Town town : towns) {
-			regionUIVOs.add(addCheckedTown(boilerTownService.checkTown(controlObjectRepository.findByTownId(town.getId())), town.getId()));
-		}
+		regionUIVOs.addAll(towns.stream().map(
+			town -> addCheckedTown(boilerTownService.checkTown(controlObjectRepository.findByTownId(town.getId())), town.getId())
+		).collect(Collectors.toList()));
 		return regionUIVOs;
 	}
 
@@ -45,20 +58,20 @@ public class BoilerRegionServiceNew {
 			for (BoilerTownUIVO townUIVO : townUIVOs) {
 				regionUIVO.setParamStatusId(townUIVO.getParamStatusId());
 				regionUIVO.setParamStatus("Снятие показаний не производится");
-				if(townUIVO.getParamStatusId().equals(boilerTownService.PARAM_STATUS_RED)) {
+				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
 					regionUIVO.setParamStatus("Показания вышли за допустимые пределы");
 					return regionUIVO;
 				}
-				if(townUIVO.getParamStatusId().equals(boilerTownService.PARAM_STATUS_GREEN)) {
+				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
 					isGreen = true;
 				}
 			}
 			if (isGreen) {
-				regionUIVO.setParamStatusId(boilerTownService.PARAM_STATUS_GREEN);
+				regionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
 				regionUIVO.setParamStatus("Показания в рамках допустимых пределов");
 			}
 		} else {
-			regionUIVO.setParamStatusId(boilerTownService.PARAM_STATUS_YELLOW);
+			regionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
 			regionUIVO.setParamStatus("Снятие показаний не производится");
 		}
 
