@@ -17,7 +17,7 @@ public class ControlObject implements Serializable {
 
 	private String paramName;
 
-	private Integer paramValue;
+	private Double paramValue;
 
 	private Date date;
 

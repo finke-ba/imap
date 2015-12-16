@@ -22,6 +22,7 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 	//<TownId <BoilerId, Boiler>>
 	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, BoilerAPV>> townMap = new ConcurrentHashMap<>();
 
+	//<BoilerId, TownId>
 	private static final ConcurrentMap<Integer, Integer> boilerTownMap = new ConcurrentHashMap<>();
 
 	private static final String SQL_GET_BOILERS_FOR_TOWN =
@@ -72,7 +73,7 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 			ControlObject controlObject = new ControlObject();
 			controlObject.setId(controlObjectId);
 			controlObject.setParamName(rs.getString("param_name"));
-			controlObject.setParamValue(rs.getInt("param_Value"));
+			controlObject.setParamValue(rs.getDouble("param_Value"));
 			controlObject.setDate(rs.getDate("param_date"));
 
 			boilerTownMap.put(boilerId, townId);
@@ -81,7 +82,6 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 				ConcurrentMap<Integer, BoilerAPV> boilerMap = townMap.get(townId);
 				if (boilerMap.containsKey(boilerId)) {
 					BoilerAPV boilerAPV = boilerMap.get(boilerId);
-					//добавить в список
 					if (!controlObject.getId().equals(0)) {
 						boilerAPV.getControlObjects().add(controlObject);
 					}

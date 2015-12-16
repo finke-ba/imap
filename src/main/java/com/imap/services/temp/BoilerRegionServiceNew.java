@@ -2,7 +2,6 @@ package com.imap.services.temp;
 
 import com.imap.dao.BoilersAPVDao;
 import com.imap.domain.jdbc.BoilerAPV;
-import com.imap.domain.jpa.Town;
 import com.imap.repository.ControlObjectRepository;
 import com.imap.repository.TownRepository;
 import com.imap.uivo.BoilerRegionUIVO;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.imap.services.BoilerTownService.*;
 
@@ -36,15 +34,11 @@ public class BoilerRegionServiceNew {
 	private BoilersAPVDao boilersAPVDao;
 
 	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
-
-		Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
-		townMap.get(0);
+		final Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
 
 		List<BoilerRegionUIVO> regionUIVOs = new ArrayList<>();
-		List<Town> towns = townRepository.findAll();
-		regionUIVOs.addAll(towns.stream().map(
-			town -> addCheckedTown(boilerTownService.checkTown(controlObjectRepository.findByTownId(town.getId())), town.getId())
-		).collect(Collectors.toList()));
+		townMap.forEach((k, v) -> regionUIVOs.add(addCheckedTown(boilerTownService.checkTown(v), k)));
+
 		return regionUIVOs;
 	}
 

@@ -13,4 +13,6 @@ public interface BoilersAPVDao {
 	void updateBoilersMap();
 
 	Map<Integer,Map<Integer,BoilerAPV>> getTownMap();
+
+	Map<Integer, Integer> getBoilerTownMap();
 }
