@@ -12,7 +12,7 @@
 			$.ajax({
 				url: "http://localhost:8080/imap/get/town?id="+townId
 			}).then(function(data) {
-				var townName = data.name;
+				var townName = data.townName;
 				$('.breadcrumb li:nth-child(2)').text(townName);
 				$('.panel-title').text("Котельные в городе " + townName);
 			});
@@ -21,21 +21,12 @@
 				url: "http://localhost:8080/imap/get/boilers/town/check?id="+townId
 			}).then(function(data) {
 				var trHTML ='';
-//				$.each(data, function(i, item) {
-//					trHTML += getTr(item[0].paramStatusId) + "<td class='hidden'>" +
-//							item[0].boilerId + '</td><td>' +
-//							item[0].name + '</td><td>' +
-//							item[0].address + '</td><td>' +
-//							item[0].paramStatus + '</td></tr>';
-//				});
 				$.each(data, function(i, item) {
-					$.each(item, function(j, subItem) {
-						trHTML += getTr(subItem.paramStatusId) + "<td class='hidden'>" +
-								subItem.boilerId + '</td><td>' +
-								subItem.name + '</td><td>' +
-								subItem.address + '</td><td>' +
-								subItem.paramStatus + '</td></tr>';
-					})
+					trHTML += getTr(item.paramStatusId) + "<td class='hidden'>" +
+							item.boilerId + '</td><td>' +
+							item.boilerName + '</td><td>' +
+							item.address + '</td><td>' +
+							item.paramStatus + '</td></tr>';
 				});
 				$('#towns_table').append(trHTML);
 				clickRowTableEvent();

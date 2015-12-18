@@ -25,7 +25,7 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 
 		BoilerTownUIVO boilerTownUIVO = new BoilerTownUIVO();
 		boilerTownUIVO.setBoilerId(controlObject.getBoiler().getId());
-		boilerTownUIVO.setName(controlObject.getBoiler().getName());
+		boilerTownUIVO.setBoilerName(controlObject.getBoiler().getName());
 		boilerTownUIVO.setAddress(controlObject.getBoiler().getAddress());
 
 		List<ActualParamValue> actualParamValues = controlObject.getActualParamValues();
@@ -62,7 +62,7 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 	public BoilerTownUIVO getTownById(Integer id) {
 		Town town = townRepository.findOne(id);
 		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
-		townUIVO.setName(town.getRu_city());
+		townUIVO.setBoilerName(town.getRu_city());
 		return townUIVO;
 	}
 

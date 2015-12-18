@@ -12,10 +12,10 @@
 			$.ajax({
 				url: "http://localhost:8080/imap/get/boiler?id=" + boilerId
 			}).then(function(data) {
-				var boilerName = data.name;
+				var boilerName = data.boilerName;
 				var boilerAddress = data.address;
-				var townName = data.town.ru_city;
-				var townId = data.town.id;
+				var townName = data.townName;
+				var townId = data.townId;
 				$('.breadcrumb li:nth-child(2) > a').text(townName);
 				$('.breadcrumb li:nth-child(2) > a').attr('href', 'town.html?townId=' + townId);
 				$('.breadcrumb li:nth-child(3)').text(boilerName);
@@ -27,13 +27,11 @@
 			}).then(function(data) {
 				var trHTML ='';
 				$.each(data, function(i, item) {
-					$.each(item, function(j, subItem) {
-						trHTML += getTr(subItem.paramStatusId) + "<td>" +
-								subItem.paramName + '</td><td>' +
-								subItem.paramValue + '</td><td>' +
-								getDateFromTimeStamp(subItem.date) + '</td><td>' +
-								subItem.paramStatus + '</td></tr>';
-					})
+					trHTML += getTr(item.paramStatusId) + "<td>" +
+							item.paramName + '</td><td>' +
+							item.paramValue + '</td><td>' +
+							item.date + '</td><td>' +
+							item.paramStatus + '</td></tr>';
 				});
 				$('#boiler_table').append(trHTML);
 			});

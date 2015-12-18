@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,10 +22,10 @@ import java.util.concurrent.ConcurrentMap;
 public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 
 	//<TownId <BoilerId, Boiler>>
-	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, BoilerAPV>> townMap = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, BoilerAPV>> TOWN_MAP = new ConcurrentHashMap<>();
 
 	//<BoilerId, TownId>
-	private static final ConcurrentMap<Integer, Integer> boilerTownMap = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<Integer, Integer> BOILER_TOWN_MAP = new ConcurrentHashMap<>();
 
 	private static final String SQL_GET_BOILERS_FOR_TOWN =
 			" SELECT t.ru_city, t.ID AS town_id, tj.*" +
@@ -74,12 +76,12 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 			controlObject.setId(controlObjectId);
 			controlObject.setParamName(rs.getString("param_name"));
 			controlObject.setParamValue(rs.getDouble("param_Value"));
-			controlObject.setDate(rs.getDate("param_date"));
+			controlObject.setDate(rs.getTimestamp("param_date"));
 
-			boilerTownMap.put(boilerId, townId);
+			BOILER_TOWN_MAP.put(boilerId, townId);
 
-			if (townMap.containsKey(townId)) {
-				ConcurrentMap<Integer, BoilerAPV> boilerMap = townMap.get(townId);
+			if (TOWN_MAP.containsKey(townId)) {
+				ConcurrentMap<Integer, BoilerAPV> boilerMap = TOWN_MAP.get(townId);
 				if (boilerMap.containsKey(boilerId)) {
 					BoilerAPV boilerAPV = boilerMap.get(boilerId);
 					if (!controlObject.getId().equals(0)) {
@@ -97,7 +99,7 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 					boiler.getControlObjects().add(controlObject);
 				}
 				boilerMap.put(boilerId, boiler);
-				townMap.put(townId, new ConcurrentHashMap<>(boilerMap));
+				TOWN_MAP.put(townId, new ConcurrentHashMap<>(boilerMap));
 			}
 		}
 	}
@@ -107,11 +109,11 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 	}
 
 	public Map<Integer, Map<Integer, BoilerAPV>> getTownMap() {
-		return Collections.unmodifiableMap(townMap);
+		return Collections.unmodifiableMap(TOWN_MAP);
 	}
 
 	public Map<Integer, Integer> getBoilerTownMap() {
-		return Collections.unmodifiableMap(boilerTownMap);
+		return Collections.unmodifiableMap(BOILER_TOWN_MAP);
 	}
 
 }

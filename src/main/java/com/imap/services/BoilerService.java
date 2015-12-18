@@ -158,7 +158,7 @@ public class BoilerService extends AbstractBoilerService<BoilerUIVO> {
 		UIVO uivo = super.checkParamValue(actualParamValue, y);
 
 		boilerUIVO.setParamName(actualParamValue.getParName());
-		boilerUIVO.setDate(actualParamValue.getDateTime());
+		boilerUIVO.setDate(actualParamValue.getDateTime().toString());
 		boilerUIVO.setParamValue(actualParamValue.getParValue());
 		boilerUIVO.setParamStatus(uivo.getParamStatus());
 		boilerUIVO.setParamStatusId(uivo.getParamStatusId());

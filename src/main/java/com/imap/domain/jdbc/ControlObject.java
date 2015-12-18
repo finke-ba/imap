@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -19,7 +21,7 @@ public class ControlObject implements Serializable {
 
 	private Double paramValue;
 
-	private Date date;
+	private Timestamp date;
 
 	@Override
 	public boolean equals(Object o) {

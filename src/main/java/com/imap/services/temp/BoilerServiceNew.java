@@ -4,6 +4,8 @@ import com.imap.dao.BoilersAPVDao;
 import com.imap.domain.jdbc.BoilerAPV;
 import com.imap.domain.jdbc.ControlObject;
 import com.imap.domain.jpa.ActualParamValue;
+import com.imap.domain.jpa.Boiler;
+import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,18 @@ public class BoilerServiceNew extends AbstractBoilerServiceNew<BoilerUIVO> {
 	@Autowired
 	private BoilersAPVDao boilersAPVDao;
 
+	public BoilerTownUIVO getBoiler(int id) {
+		BoilerTownUIVO boilerTownUIVO = new BoilerTownUIVO();
+		Integer townId = boilersAPVDao.getBoilerTownMap().get(id);
+		Map<Integer, BoilerAPV> townMap = boilersAPVDao.getTownMap().get(townId);
+		BoilerAPV boilerAPV = townMap.get(id);
+		boilerTownUIVO.setBoilerName(boilerAPV.getBoilerName());
+		boilerTownUIVO.setAddress(boilerAPV.getBoilerAddress());
+		boilerTownUIVO.setTownName(boilerAPV.getTownName());
+		boilerTownUIVO.setTownId(townId);
+		return boilerTownUIVO;
+	}
+
 	public List<BoilerUIVO> getBoilerChecked(int boilerId) {
 		Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
 		Map<Integer, Integer> boilerTownMap = boilersAPVDao.getBoilerTownMap();
@@ -35,7 +49,7 @@ public class BoilerServiceNew extends AbstractBoilerServiceNew<BoilerUIVO> {
 		boilerUIVO.setParamStatusId(uivo.getParamStatusId());
 		boilerUIVO.setParamName(controlObject.getParamName());
 		boilerUIVO.setParamValue(controlObject.getParamValue().toString());
-		boilerUIVO.setDate(controlObject.getDate());
+		boilerUIVO.setDate(controlObject.getDate().toString());
 		return boilerUIVO;
 	}
 

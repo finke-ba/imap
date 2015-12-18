@@ -39,7 +39,7 @@ public class BoilerServiceTest {
 		BoilerUIVO boilerUIVOActual = new BoilerUIVO();
 		boilerUIVOActual.setParamName("T03");
 		boilerUIVOActual.setParamValue("11.80");
-		boilerUIVOActual.setDate(date);
+		boilerUIVOActual.setDate(date.toString());
 		boilerUIVOActual.setParamStatus("Показания вышли за пределы +/- 10°C 52.386");
 		boilerUIVOActual.setParamStatusId(paramStatusRed);
 

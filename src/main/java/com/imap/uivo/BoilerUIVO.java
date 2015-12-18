@@ -3,6 +3,7 @@ package com.imap.uivo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -16,7 +17,8 @@ public class BoilerUIVO extends UIVO {
 
 	private String paramValue;
 
-	private Date date;
+	private String date;
 
-//	private String reason;
+	private String boilerName;
+
 }

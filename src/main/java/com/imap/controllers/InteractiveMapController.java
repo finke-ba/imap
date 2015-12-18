@@ -27,91 +27,91 @@ import java.util.List;
 public class InteractiveMapController {
 
 	@Autowired
-	private BoilerService boilerService;
+	private BoilerService boilerServiceOld;
 
 	@Autowired
-	private BoilerTownService boilerTownService;
+	private BoilerTownService boilerTownServiceOld;
 
 	@Autowired
-	private BoilerRegionService boilerRegionService;
+	private BoilerRegionService boilerRegionServiceOld;
 
 	@Autowired
-	private BoilerServiceNew boilerServiceNew;
+	private BoilerServiceNew boilerService;
 
 	@Autowired
-	private BoilerTownServiceNew boilerTownServiceNew;
+	private BoilerTownServiceNew boilerTownService;
 
 	@Autowired
-	private BoilerRegionServiceNew boilerRegionServiceNew;
+	private BoilerRegionServiceNew boilerRegionService;
 
 //	@RequestMapping(value = "/get/boilers/region", method = RequestMethod.GET)
 //	public List<BoilerRegion> getBoilersForRegion() {
-//		return boilerService.getBoilersForRegion();
+//		return boilerServiceOld.getBoilersForRegion();
 //	}
 //
 //	@RequestMapping(value = "/get/boilers/town", method = RequestMethod.GET)
 //	public List<BoilerTown> getBoilersForTown(@RequestParam int id) {
-//		return boilerService.getBoilersForTown(id);
+//		return boilerServiceOld.getBoilersForTown(id);
 //	}
 //
 //	@RequestMapping(value = "/get/boiler", method = RequestMethod.GET)
 //	public List<com.imap.domain.jdbc.Boiler> getBoiler(@RequestParam int id) {
-//		return boilerService.getBoiler(id);
+//		return boilerServiceOld.getBoiler(id);
 //	}
 //
 	@RequestMapping(value = "/get/boilerCO/new", method = RequestMethod.GET)
 	public List<ControlObject> getBoilerCONew(@RequestParam int id) {
-		return boilerService.getBoilerCONew(id);
+		return boilerServiceOld.getBoilerCONew(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/town/new", method = RequestMethod.GET)
 	public List<ControlObject> getBoilersForTownNew(@RequestParam int id) {
-		return boilerService.getBoilersForTownNew(id);
+		return boilerServiceOld.getBoilersForTownNew(id);
 	}
 //
 //	@RequestMapping(value = "/get/boilers/region/new", method = RequestMethod.GET)
 //	public List<ControlObject> getBoilersForRegionNew() {
-//		return boilerService.getBoilersForRegionNew();
+//		return boilerServiceOld.getBoilersForRegionNew();
 //	}
 
 	@RequestMapping(value = "/get/town", method = RequestMethod.GET)
 	public BoilerTownUIVO getTownNameNew(@RequestParam int id) {
-		return boilerTownService.getTownById(id);
+		return boilerTownService.getTown(id);
 	}
 
 	@RequestMapping(value = "/get/boiler", method = RequestMethod.GET)
-	public Boiler getBoiler(@RequestParam int id) {
+	public BoilerTownUIVO getBoiler(@RequestParam int id) {
 		return boilerService.getBoiler(id);
 	}
 
+	@RequestMapping(value = "/get/boiler/check/old", method = RequestMethod.GET)
+	public List<List<BoilerUIVO>> getBoilerCheckOld(@RequestParam int id) {
+		return boilerServiceOld.getBoilerCheck(id);
+	}
+
+	@RequestMapping(value = "/get/boilers/town/check/old", method = RequestMethod.GET)
+	public List<List<BoilerTownUIVO>> getBoilersForTownCheckOld(@RequestParam int id) {
+		return boilerTownServiceOld.getBoilersForTownCheck(id);
+	}
+
+	@RequestMapping(value = "/get/boilers/region/check/old", method = RequestMethod.GET)
+	public List<BoilerRegionUIVO> getBoilersForRegionCheckOld() {
+		return boilerRegionServiceOld.getBoilersForRegionCheck();
+	}
+
 	@RequestMapping(value = "/get/boiler/check", method = RequestMethod.GET)
-	public List<List<BoilerUIVO>> getBoilerCheck(@RequestParam int id) {
-		return boilerService.getBoilerCheck(id);
+	public List<BoilerUIVO> getBoilerCheck(@RequestParam int id) {
+		return boilerService.getBoilerChecked(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/town/check", method = RequestMethod.GET)
-	public List<List<BoilerTownUIVO>> getBoilersForTownCheck(@RequestParam int id) {
-		return boilerTownService.getBoilersForTownCheck(id);
+	public List<BoilerTownUIVO> getBoilersForTownCheck(@RequestParam int id) {
+		return boilerTownService.getBoilersInTownChecked(id);
 	}
 
 	@RequestMapping(value = "/get/boilers/region/check", method = RequestMethod.GET)
 	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
 		return boilerRegionService.getBoilersForRegionCheck();
-	}
-
-	@RequestMapping(value = "/get/boiler/check/new", method = RequestMethod.GET)
-	public List<BoilerUIVO> getBoilerCheckNew(@RequestParam int id) {
-		return boilerServiceNew.getBoilerChecked(id);
-	}
-
-	@RequestMapping(value = "/get/boilers/town/check/new", method = RequestMethod.GET)
-	public List<BoilerTownUIVO> getBoilersForTownCheckNew(@RequestParam int id) {
-		return boilerTownServiceNew.getBoilersInTownChecked(id);
-	}
-
-	@RequestMapping(value = "/get/boilers/region/check/new", method = RequestMethod.GET)
-	public List<BoilerRegionUIVO> getBoilersForRegionCheckNew() {
-		return boilerRegionServiceNew.getBoilersForRegionCheck();
 	}
 
 

@@ -2,19 +2,14 @@ package com.imap.services.temp;
 
 import com.imap.dao.BoilersAPVDao;
 import com.imap.domain.jdbc.BoilerAPV;
-import com.imap.domain.jdbc.BoilerTown;
 import com.imap.domain.jdbc.ControlObject;
-import com.imap.domain.jpa.ActualParamValue;
-import com.imap.domain.jpa.Town;
 import com.imap.repository.TownRepository;
 import com.imap.uivo.BoilerTownUIVO;
-import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +30,16 @@ public class BoilerTownServiceNew extends AbstractBoilerServiceNew<BoilerTownUIV
 		return checkTown(townMap.get(id));
 	}
 
+	public BoilerTownUIVO getTown(Integer id) {
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		Map<Integer, BoilerAPV> boilerMap = boilersAPVDao.getTownMap().get(id);
+		if (!boilerMap.isEmpty()) {
+			Map.Entry<Integer, BoilerAPV> boilerAPVEntry = boilerMap.entrySet().iterator().next();
+			townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
+		}
+		return townUIVO;
+	}
+
 	/**
 	 * Проверяет все котельные в одном городе.
 	 *
@@ -52,7 +57,7 @@ public class BoilerTownServiceNew extends AbstractBoilerServiceNew<BoilerTownUIV
 	public BoilerTownUIVO addCheckedBoiler(List<BoilerTownUIVO> boilerTownUIVOs, BoilerAPV boiler, Integer boilerId) {
 		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
 		townUIVO.setBoilerId(boilerId);
-		townUIVO.setName(boiler.getBoilerName());
+		townUIVO.setBoilerName(boiler.getBoilerName());
 		townUIVO.setAddress(boiler.getBoilerAddress());
 
 		if(!boilerTownUIVOs.isEmpty()) {
