@@ -1,4 +1,4 @@
-package com.imap.services.temp;
+package com.imap.services;
 
 import com.imap.dao.BoilersAPVDao;
 import org.springframework.beans.factory.annotation.Autowired;

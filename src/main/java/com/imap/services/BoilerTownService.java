@@ -1,13 +1,16 @@
 package com.imap.services;
 
-import com.imap.domain.jpa.ActualParamValue;
-import com.imap.domain.jpa.ControlObject;
-import com.imap.domain.jpa.Town;
+import com.imap.dao.BoilersAPVDao;
+import com.imap.domain.BoilerAPV;
+import com.imap.domain.ControlObject;
 import com.imap.uivo.BoilerTownUIVO;
+import com.imap.uivo.UIVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -15,55 +18,77 @@ import java.util.List;
 @Service
 public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 
-	public List<List<BoilerTownUIVO>> getBoilersForTownCheck(int id) {
-		return checkBoilerNew(controlObjectRepository.findByTownId(id));
+	@Autowired
+	private BoilersAPVDao boilersAPVDao;
+
+	public List<BoilerTownUIVO> getBoilersInTownChecked(int id) {
+		Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
+		return checkTown(townMap.get(id));
+	}
+
+	public BoilerTownUIVO getTown(Integer id) {
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		Map<Integer, BoilerAPV> boilerMap = boilersAPVDao.getTownMap().get(id);
+		if (!boilerMap.isEmpty()) {
+			Map.Entry<Integer, BoilerAPV> boilerAPVEntry = boilerMap.entrySet().iterator().next();
+			townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
+		}
+		return townUIVO;
+	}
+
+	/**
+	 * Проверяет все котельные в одном городе.
+	 *
+	 * @param controlObjects список котельных в городе
+	 * @return список проверенных котельных в городе
+	 */
+	public List<BoilerTownUIVO> checkTown(Map<Integer, BoilerAPV> controlObjects) {
+		List<BoilerTownUIVO> boilerTownUIVOs = new ArrayList<>();
+
+		controlObjects.forEach((k, v) -> boilerTownUIVOs.add(addCheckedBoiler(checkBoiler(v.getControlObjects()), v, k)));
+
+		return boilerTownUIVOs;
+	}
+
+	public BoilerTownUIVO addCheckedBoiler(List<BoilerTownUIVO> boilerTownUIVOs, BoilerAPV boiler, Integer boilerId) {
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		townUIVO.setBoilerId(boilerId);
+		townUIVO.setBoilerName(boiler.getBoilerName());
+		townUIVO.setAddress(boiler.getBoilerAddress());
+
+		if(!boilerTownUIVOs.isEmpty()) {
+			//Приборы учета для одной котельной
+			boolean isGreen = false;
+			for (UIVO boilerTownUIVO : boilerTownUIVOs) {
+				townUIVO.setParamStatusId(boilerTownUIVO.getParamStatusId());
+				townUIVO.setParamStatus("Снятие показаний не производится");
+				if(boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
+					townUIVO.setParamStatus("Показания вышли за допустимые пределы");
+					return townUIVO;
+				}
+				if(boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
+					isGreen = true;
+				}
+			}
+			if (isGreen) {
+				townUIVO.setParamStatusId(PARAM_STATUS_GREEN);
+				townUIVO.setParamStatus("Показания в рамках допустимых пределов");
+			}
+		} else {
+			townUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
+			townUIVO.setParamStatus("Снятие показаний не производится");
+		}
+
+		return townUIVO;
 	}
 
 	@Override
-	public List<BoilerTownUIVO> checkBoilerControlObject(ControlObject controlObject) {
-		List<BoilerTownUIVO> boilersUIVO = new ArrayList<>();
-
+	public BoilerTownUIVO mapControlObject(ControlObject controlObject, UIVO uivo) {
 		BoilerTownUIVO boilerTownUIVO = new BoilerTownUIVO();
-		boilerTownUIVO.setBoilerId(controlObject.getBoiler().getId());
-		boilerTownUIVO.setBoilerName(controlObject.getBoiler().getName());
-		boilerTownUIVO.setAddress(controlObject.getBoiler().getAddress());
+		boilerTownUIVO.setParamStatus(uivo.getParamStatus());
+		boilerTownUIVO.setParamStatusId(uivo.getParamStatusId());
 
-		List<ActualParamValue> actualParamValues = controlObject.getActualParamValues();
-		if (actualParamValues.size() > 0) {
-			Integer paramStatusId1 = 0;
-			Integer paramStatusId2 = 0;
-			Integer paramStatusId3 = 0;
-			for (ActualParamValue actualParamValue : actualParamValues) {
-				if (ID_PD_T1.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId1 = checkParamValue(actualParamValue, Y1).getParamStatusId();
-				} else if (ID_PD_T2.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId2 = checkParamValue(actualParamValue, Y2).getParamStatusId();
-				} else if (ID_PD_T3.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId3 = checkParamValue(actualParamValue, Y3).getParamStatusId();
-				}
-			}
-			if (PARAM_STATUS_GREEN.equals(paramStatusId1) &&
-					PARAM_STATUS_GREEN.equals(paramStatusId2) &&
-					PARAM_STATUS_GREEN.equals(paramStatusId3)) {
-				boilerTownUIVO.setParamStatusId(PARAM_STATUS_GREEN);
-				boilerTownUIVO.setParamStatus("Показания в рамках допустимых пределов");
-			} else {
-				boilerTownUIVO.setParamStatusId(PARAM_STATUS_RED);
-				boilerTownUIVO.setParamStatus("Показания вышли за допустимые пределы");
-			}
-		} else {
-			boilerTownUIVO.setParamStatus("Снятие показаний не производится");
-			boilerTownUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
-		}
-		boilersUIVO.add(boilerTownUIVO);
-		return boilersUIVO;
-	}
-
-	public BoilerTownUIVO getTownById(Integer id) {
-		Town town = townRepository.findOne(id);
-		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
-		townUIVO.setBoilerName(town.getRu_city());
-		return townUIVO;
+		return boilerTownUIVO;
 	}
 
 }

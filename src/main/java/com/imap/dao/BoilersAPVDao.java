@@ -1,7 +1,6 @@
 package com.imap.dao;
 
-import com.imap.domain.jdbc.Boiler;
-import com.imap.domain.jdbc.BoilerAPV;
+import com.imap.domain.BoilerAPV;
 
 import java.util.Map;
 

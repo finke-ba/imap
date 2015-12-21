@@ -1,123 +1,66 @@
 package com.imap.services;
 
-import com.imap.domain.jpa.ActualParamValue;
-import com.imap.domain.jpa.ControlObject;
-import com.imap.domain.jpa.Town;
-import com.imap.repository.TownRepository;
+import com.imap.dao.BoilersAPVDao;
+import com.imap.domain.BoilerAPV;
 import com.imap.uivo.BoilerRegionUIVO;
 import com.imap.uivo.BoilerTownUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import static com.imap.services.BoilerTownService.*;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
-public class BoilerRegionService extends AbstractBoilerService<BoilerRegionUIVO> {
+public class BoilerRegionService {
+
+	@Autowired
+	private BoilerTownService boilerTownService;
+
+	@Autowired
+	private BoilersAPVDao boilersAPVDao;
 
 	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
-		return checkBoiler(controlObjectRepository.findAll());
+		final Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
+
+		List<BoilerRegionUIVO> regionUIVOs = new ArrayList<>();
+		townMap.forEach((k, v) -> regionUIVOs.add(addCheckedTown(boilerTownService.checkTown(v), k)));
+
+		return regionUIVOs;
 	}
 
+	private BoilerRegionUIVO addCheckedTown(List<BoilerTownUIVO> townUIVOs, Integer id) {
+		BoilerRegionUIVO regionUIVO = new BoilerRegionUIVO();
 
-	public List<BoilerRegionUIVO> checkBoiler(List<ControlObject> controlObjectsForBoiler) {
-		List<Town> towns = townRepository.findAll();
-		List<BoilerRegionUIVO> boilerUIVOsList = new ArrayList<>();
-		for (ControlObject controlObject : controlObjectsForBoiler) {
-			boilerUIVOsList.add(checkBoilerControlObjectNew(controlObject));
-		}
-		HashMap<Integer, BoilerRegionUIVO> hmTownsIds = new HashMap<>();
-		HashSet<Integer> hsTownsIds = new HashSet<>();
-		for (Town town : towns) {
-			BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
-			boilerRegionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
-			boilerRegionUIVO.setParamStatus("Показания в рамках допустимых пределов");
-			boilerRegionUIVO.setTownId(town.getId());
-			hmTownsIds.put(town.getId(), boilerRegionUIVO);
-			hsTownsIds.add(town.getId());
-		}
-		for (BoilerRegionUIVO boilerRegionUIVO : boilerUIVOsList) {
-			if (PARAM_STATUS_RED.equals(boilerRegionUIVO.getParamStatusId())) {
-				hmTownsIds.put(boilerRegionUIVO.getTownId(), boilerRegionUIVO);
-			}
-			hsTownsIds.remove(boilerRegionUIVO.getTownId());
-		}
-		for (Town town : towns) {
-			if (hsTownsIds.contains(town.getId())) {
-				BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
-				boilerRegionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
-				boilerRegionUIVO.setParamStatus("Снятие показаний не производится");
-				boilerRegionUIVO.setTownId(town.getId());
-				hmTownsIds.put(town.getId(), boilerRegionUIVO);
-			}
-		}
-		List<BoilerRegionUIVO> resultList = new ArrayList<>();
-		for (Town town : towns) {
-			BoilerRegionUIVO hmBoilerUIVO = hmTownsIds.get(town.getId());
-			BoilerRegionUIVO result = new BoilerRegionUIVO();
-			result.setTownId(hmBoilerUIVO.getTownId());
-			result.setParamStatusId(hmBoilerUIVO.getParamStatusId());
-			result.setParamStatus(hmBoilerUIVO.getParamStatus());
-			resultList.add(result);
-		}
-
-//		return boilerUIVOsList;
-		return resultList;
-	}
-
-
-	public BoilerRegionUIVO checkBoilerControlObjectNew(ControlObject controlObject) {
-//		BoilerRegionUIVO boilersUIVO = new ArrayList<>();
-
-		BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
-		BoilerRegionUIVO resultList = new BoilerRegionUIVO();
-
-		boilerRegionUIVO.setTownId(controlObject.getBoiler().getTown().getId());
-
-		List<ActualParamValue> actualParamValues = controlObject.getActualParamValues();
-		if (actualParamValues.size() > 0) {
-			Integer paramStatusId1 = 0;
-			Integer paramStatusId2 = 0;
-			Integer paramStatusId3 = 0;
-			for (ActualParamValue actualParamValue : actualParamValues) {
-				if (ID_PD_T1.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId1 = checkParamValue(actualParamValue, Y1).getParamStatusId();
-				} else if (ID_PD_T2.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId2 = checkParamValue(actualParamValue, Y2).getParamStatusId();
-				} else if (ID_PD_T3.equals(actualParamValue.getIdParamDescription())) {
-					paramStatusId3 = checkParamValue(actualParamValue, Y3).getParamStatusId();
+		regionUIVO.setTownId(id);
+		if(!townUIVOs.isEmpty()) {
+			//Приборы учета для одной котельной
+			boolean isGreen = false;
+			for (BoilerTownUIVO townUIVO : townUIVOs) {
+				regionUIVO.setParamStatusId(townUIVO.getParamStatusId());
+				regionUIVO.setParamStatus("Снятие показаний не производится");
+				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
+					regionUIVO.setParamStatus("Показания вышли за допустимые пределы");
+					return regionUIVO;
+				}
+				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
+					isGreen = true;
 				}
 			}
-			if (PARAM_STATUS_GREEN.equals(paramStatusId1) &&
-					PARAM_STATUS_GREEN.equals(paramStatusId2) &&
-					PARAM_STATUS_GREEN.equals(paramStatusId3)) {
-				boilerRegionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
-				boilerRegionUIVO.setParamStatus("Показания в рамках допустимых пределов");
-			} else {
-				boilerRegionUIVO.setParamStatusId(PARAM_STATUS_RED);
-				boilerRegionUIVO.setParamStatus("Показания вышли за допустимые пределы");
+			if (isGreen) {
+				regionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
+				regionUIVO.setParamStatus("Показания в рамках допустимых пределов");
 			}
 		} else {
-			boilerRegionUIVO.setParamStatus("Снятие показаний не производится");
-			boilerRegionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
+			regionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
+			regionUIVO.setParamStatus("Снятие показаний не производится");
 		}
-//		boilersUIVO.add(boilerRegionUIVO);
-//		return boilersUIVO;
-		return boilerRegionUIVO;
+
+		return regionUIVO;
 	}
-
-	public List<BoilerRegionUIVO> checkBoilerControlObject(ControlObject controlObject){
-		List<BoilerRegionUIVO> boilersUIVO = new ArrayList<>();
-		BoilerRegionUIVO boilerRegionUIVO = new BoilerRegionUIVO();
-		boilersUIVO.add(boilerRegionUIVO);
-
-		return boilersUIVO;
-	}
-
-
 }

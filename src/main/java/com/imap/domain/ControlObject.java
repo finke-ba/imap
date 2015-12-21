@@ -1,12 +1,10 @@
-package com.imap.domain.jdbc;
+package com.imap.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>

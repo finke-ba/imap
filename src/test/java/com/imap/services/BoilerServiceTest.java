@@ -1,10 +1,11 @@
 package com.imap.services;
 
-import com.imap.domain.jpa.ActualParamValue;
+import com.imap.domain.ControlObject;
 import com.imap.uivo.BoilerUIVO;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -16,34 +17,27 @@ public class BoilerServiceTest {
 
 	@Test
 	public void testBoiler() {
-		Double xt = 8.0;
-		Double y1 = 2.2294 * (8 - xt) + 52.386;
-		Double Y2 = 0.7748 * (8 - xt) + 36.386;
-		Double Y3 = 1.2294 * (8 - xt) + 41.386;
 
-		Date date = new Date();
+		Timestamp dateTime = new Timestamp(0L);
 
-		ActualParamValue paramValue = new ActualParamValue();
-		paramValue.setIdParamDescription(520);
-		paramValue.setParValue("11.80");
-		paramValue.setDateTime(date);
-		paramValue.setIdControlObject(63);
-		paramValue.setParName("T03");
-		paramValue.setParDim("^C");
-		paramValue.setParNum(156);
-
-		Integer paramStatusGreen = 1;
-		Integer paramStatusYellow = 2;
-		Integer paramStatusRed = 3;
+		ControlObject controlObject = new ControlObject();
+		controlObject.setId(63);
+		controlObject.setDate(dateTime);
+		controlObject.setParamName("T01");
+		controlObject.setParamValue(58.00);
 
 		BoilerUIVO boilerUIVOActual = new BoilerUIVO();
-		boilerUIVOActual.setParamName("T03");
-		boilerUIVOActual.setParamValue("11.80");
-		boilerUIVOActual.setDate(date.toString());
-		boilerUIVOActual.setParamStatus("Показания вышли за пределы +/- 10°C 52.386");
-		boilerUIVOActual.setParamStatusId(paramStatusRed);
+		boilerUIVOActual.setParamName("T01");
+		boilerUIVOActual.setParamValue("58.0");
+		boilerUIVOActual.setDate(dateTime.toString());
+		boilerUIVOActual.setParamStatus("Предел 52.386");
+		boilerUIVOActual.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
 
-		BoilerUIVO boilerUIVOExpected = boilerService.checkParamValue(paramValue, y1);
+		BoilerUIVO boilerUIVOExpected = boilerService.checkParamValue(
+				controlObject.getParamValue(),
+				AbstractBoilerService.Y1,
+				controlObject
+		);
 
 		Assert.assertEquals(boilerUIVOActual.getParamName(), boilerUIVOExpected.getParamName());
 		Assert.assertEquals(boilerUIVOActual.getParamValue(), boilerUIVOExpected.getParamValue());

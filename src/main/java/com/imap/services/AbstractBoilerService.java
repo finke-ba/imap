@@ -1,31 +1,16 @@
 package com.imap.services;
 
-import com.imap.domain.jpa.ActualParamValue;
-import com.imap.domain.jpa.ControlObject;
-import com.imap.repository.BoilerRepository;
-import com.imap.repository.ControlObjectRepository;
-import com.imap.repository.TownRepository;
-import com.imap.uivo.BoilerTownUIVO;
-import com.imap.uivo.BoilerUIVO;
+import com.imap.domain.ControlObject;
 import com.imap.uivo.UIVO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public abstract class AbstractBoilerService <U extends UIVO> {
-
-	@Autowired
-	protected BoilerRepository boilerRepository;
-
-	@Autowired
-	protected ControlObjectRepository controlObjectRepository;
-
-	@Autowired
-	protected TownRepository townRepository;
+public abstract class AbstractBoilerService<U extends UIVO> {
 
 	public final static Integer PARAM_STATUS_GREEN = 1;
 
@@ -41,48 +26,50 @@ public abstract class AbstractBoilerService <U extends UIVO> {
 
 	public static final Double Y3 = 1.2294 * (8 - XT) + 41.386;
 
-	public static final Integer ID_PD_T1 = 510;
+	public static final String T1 = "T01";
 
-	public static final Integer ID_PD_T2 = 515;
+	public static final String T2 = "T02";
 
-	public static final Integer ID_PD_T3 = 520;
+	public static final String T3 = "T03";
 
-
-	public List<ControlObject> getBoilerCONew(int id) {
-		return controlObjectRepository.findByBoilerId(id);
-	}
-
-	public List<ControlObject> getBoilersForTownNew(int id) {
-		return controlObjectRepository.findByTownId(id);
-	}
-
-	public List<ControlObject> getBoilersForRegionNew() {
-		return controlObjectRepository.findAll();
-	}
-
-
-	public List<List<U>> checkBoilerNew(List<ControlObject> controlObjectsForBoiler) {
-		List<List<U>> boilerUIVOsList = new ArrayList<>();
-		for (ControlObject controlObject : controlObjectsForBoiler) {
-			boilerUIVOsList.add(checkBoilerControlObject(controlObject));
+	//Для одной котельной получили список приборов учета
+	public List<U> checkBoiler(LinkedHashSet<ControlObject> controlObjects) {
+		List<U> boilerControlObjects = new ArrayList<>();
+		for (ControlObject controlObject : controlObjects) {
+			checkControlObject(controlObject, boilerControlObjects);
 		}
-		return boilerUIVOsList;
+		return boilerControlObjects;
 	}
 
-	public abstract List<U> checkBoilerControlObject(ControlObject controlObject);
+	//Для одного прибора контроля учета
+	public void checkControlObject(ControlObject controlObject, List<U> boilerControlObjects) {
+		if (T1.equals(controlObject.getParamName())) {
+			U uivo = checkParamValue(controlObject.getParamValue(), Y1, controlObject);
+			boilerControlObjects.add(uivo);
+		} else if (T2.equals(controlObject.getParamName())) {
+			U uivo = checkParamValue(controlObject.getParamValue(), Y2, controlObject);
+			boilerControlObjects.add(uivo);
+		} else if (T3.equals(controlObject.getParamName())) {
+			U uivo = checkParamValue(controlObject.getParamValue(), Y3, controlObject);
+			boilerControlObjects.add(uivo);
+		}
+	}
 
-	public UIVO checkParamValue(ActualParamValue actualParamValue, Double y) {
+	public U checkParamValue(Double paramValue, Double y, ControlObject controlObject) {
 		UIVO uivo = new UIVO();
-
-		if ( Double.parseDouble(actualParamValue.getParValue()) >= (y - 10) &&
-				Double.parseDouble(actualParamValue.getParValue()) <= (y + 10) ){
+		if (paramValue == null) {
+			uivo.setParamStatusId(PARAM_STATUS_YELLOW);
+			uivo.setParamStatus("Снятие показаний не производится");
+		} else if (paramValue >= (y - 10) && paramValue <= (y + 10)) {
 			uivo.setParamStatusId(PARAM_STATUS_GREEN);
 			uivo.setParamStatus(String.format("Предел %s", y.toString()));
 		} else {
 			uivo.setParamStatusId(PARAM_STATUS_RED);
 			uivo.setParamStatus(String.format("Показания вышли за пределы +/- 10°C %s", y.toString()));
 		}
-
-		return uivo;
+		return mapControlObject(controlObject, uivo);
 	}
+
+	public abstract U mapControlObject(ControlObject controlObject, UIVO uivo);
+
 }

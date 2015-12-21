@@ -1,15 +1,13 @@
 package com.imap.dao.jdbc;
 
 import com.imap.dao.BoilersAPVDao;
-import com.imap.domain.jdbc.BoilerAPV;
-import com.imap.domain.jdbc.ControlObject;
+import com.imap.domain.BoilerAPV;
+import com.imap.domain.ControlObject;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
