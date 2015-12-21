@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
+ * Объект-представление для данных о проверке приборов учета.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter

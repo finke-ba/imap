@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Объект-представление для данных о проверенных котельных в городе.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter

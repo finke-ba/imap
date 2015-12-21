@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
+ * Объект, содержащий информацию о приборе учета.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter

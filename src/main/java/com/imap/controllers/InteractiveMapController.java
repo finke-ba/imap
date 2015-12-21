@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * Контроллер для интерактивной карты телеметрии.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @RestController
@@ -54,6 +56,5 @@ public class InteractiveMapController {
 	public List<BoilerRegionUIVO> getBoilersForRegionCheck() {
 		return boilerRegionService.getBoilersForRegionCheck();
 	}
-
 
 }

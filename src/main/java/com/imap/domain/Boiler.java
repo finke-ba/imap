@@ -7,11 +7,15 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 
 /**
+ * Объект, содержащий информацию о котельной.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter
 @Setter
-public class BoilerAPV implements Serializable {
+public class Boiler implements Serializable {
+
+	private Integer boilerId;
 
 	private String boilerAddress;
 

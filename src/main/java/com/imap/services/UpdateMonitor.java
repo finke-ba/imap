@@ -1,6 +1,6 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersAPVDao;
+import com.imap.dao.BoilersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 public class UpdateMonitor {
 
 	@Autowired
-	BoilersAPVDao boilersAPVDao;
+	BoilersDao boilersDao;
 
 	@Scheduled(fixedDelay = 300_000)
 	public void update() {
-		boilersAPVDao.updateBoilersMap();
+		boilersDao.updateBoilersMap();
 	}
 }

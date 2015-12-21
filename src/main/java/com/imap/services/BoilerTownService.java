@@ -1,7 +1,7 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersAPVDao;
-import com.imap.domain.BoilerAPV;
+import com.imap.dao.BoilersDao;
+import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
 import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.UIVO;
@@ -13,27 +13,38 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Сервис для проверки и получения информации о всех котельных в определенном городе.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
 public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 
-	@Autowired
-	private BoilersAPVDao boilersAPVDao;
-
-	public List<BoilerTownUIVO> getBoilersInTownChecked(int id) {
-		Map<Integer, Map<Integer, BoilerAPV>> townMap = boilersAPVDao.getTownMap();
-		return checkTown(townMap.get(id));
-	}
-
+	/**
+	 * Получает информацию об определенном городе по его идентификатору.
+	 *
+	 * @param id идентификатор города
+	 * @return информацию городе
+	 */
 	public BoilerTownUIVO getTown(Integer id) {
 		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
-		Map<Integer, BoilerAPV> boilerMap = boilersAPVDao.getTownMap().get(id);
+		Map<Integer, Boiler> boilerMap = boilersDao.getTownMap().get(id);
 		if (!boilerMap.isEmpty()) {
-			Map.Entry<Integer, BoilerAPV> boilerAPVEntry = boilerMap.entrySet().iterator().next();
+			Map.Entry<Integer, Boiler> boilerAPVEntry = boilerMap.entrySet().iterator().next();
 			townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
 		}
 		return townUIVO;
+	}
+
+	/**
+	 * Получает список проверенных котельных в определенном городе.
+	 *
+	 * @param id идентификатор города
+	 * @return список проверенных котельных
+	 */
+	public List<BoilerTownUIVO> getBoilersInTownChecked(int id) {
+		Map<Integer, Map<Integer, Boiler>> townMap = boilersDao.getTownMap();
+		return checkTown(townMap.get(id));
 	}
 
 	/**
@@ -42,17 +53,24 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 	 * @param controlObjects список котельных в городе
 	 * @return список проверенных котельных в городе
 	 */
-	public List<BoilerTownUIVO> checkTown(Map<Integer, BoilerAPV> controlObjects) {
+	public List<BoilerTownUIVO> checkTown(Map<Integer, Boiler> controlObjects) {
 		List<BoilerTownUIVO> boilerTownUIVOs = new ArrayList<>();
 
-		controlObjects.forEach((k, v) -> boilerTownUIVOs.add(addCheckedBoiler(checkBoiler(v.getControlObjects()), v, k)));
+		controlObjects.forEach((k, v) -> boilerTownUIVOs.add(addCheckedBoiler(checkBoiler(v.getControlObjects()), v)));
 
 		return boilerTownUIVOs;
 	}
 
-	public BoilerTownUIVO addCheckedBoiler(List<BoilerTownUIVO> boilerTownUIVOs, BoilerAPV boiler, Integer boilerId) {
+	/**
+	 * Преобразует список проверенных приборов учета котельной в объект, содержащий данные проверки этой котельной.
+	 *
+	 * @param boilerTownUIVOs список проверенных приборов учета котельной
+	 * @param boiler информация о котельной
+	 * @return данные о проверенной котельной
+	 */
+	private BoilerTownUIVO addCheckedBoiler(List<BoilerTownUIVO> boilerTownUIVOs, Boiler boiler) {
 		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
-		townUIVO.setBoilerId(boilerId);
+		townUIVO.setBoilerId(boiler.getBoilerId());
 		townUIVO.setBoilerName(boiler.getBoilerName());
 		townUIVO.setAddress(boiler.getBoilerAddress());
 
@@ -83,7 +101,7 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 	}
 
 	@Override
-	public BoilerTownUIVO mapControlObject(ControlObject controlObject, UIVO uivo) {
+	protected BoilerTownUIVO mapControlObject(ControlObject controlObject, UIVO uivo) {
 		BoilerTownUIVO boilerTownUIVO = new BoilerTownUIVO();
 		boilerTownUIVO.setParamStatus(uivo.getParamStatus());
 		boilerTownUIVO.setParamStatusId(uivo.getParamStatusId());

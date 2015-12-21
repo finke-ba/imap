@@ -1,7 +1,7 @@
 package com.imap.dao.jdbc;
 
-import com.imap.dao.BoilersAPVDao;
-import com.imap.domain.BoilerAPV;
+import com.imap.dao.BoilersDao;
+import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
@@ -17,14 +17,15 @@ import java.util.concurrent.ConcurrentMap;
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
-public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
+public class BoilersDaoImpl extends AbstractDao implements BoilersDao {
 
-	//<TownId <BoilerId, Boiler>>
-	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, BoilerAPV>> TOWN_MAP = new ConcurrentHashMap<>();
+	/** Соотношение идентиикатора города к котельным в этом городе.(<TownId <BoilerId, Boiler>>) */
+	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, Boiler>> TOWN_MAP = new ConcurrentHashMap<>();
 
-	//<BoilerId, TownId>
+	/** Соотношение идентификатора котельной к идентификатору города.(<BoilerId, TownId>) */
 	private static final ConcurrentMap<Integer, Integer> BOILER_TOWN_MAP = new ConcurrentHashMap<>();
 
+	/** Запрос для получения данных о всех приорах учета в регионе. */
 	private static final String SQL_GET_BOILERS_FOR_TOWN =
 			" SELECT t.ru_city, t.ID AS town_id, tj.*" +
 			" FROM towns t" +
@@ -52,7 +53,6 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 			" ORDER BY Town_ID, Boiler_ID, param_id, param_name" +
 			";";
 
-	@Override
 	public void updateBoilersMap() {
 		CallbackHandler handler = new CallbackHandler();
 		getJdbcTemplate().query(SQL_GET_BOILERS_FOR_TOWN, handler);
@@ -65,7 +65,8 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 			int townId = rs.getInt("town_id");
 			int controlObjectId = rs.getInt("param_id");
 
-			BoilerAPV boiler = new BoilerAPV();
+			Boiler boiler = new Boiler();
+			boiler.setBoilerId(boilerId);
 			boiler.setBoilerAddress(rs.getString("boiler_address"));
 			boiler.setBoilerName(rs.getString("boiler_name"));
 			boiler.setTownName(rs.getString("ru_city"));
@@ -79,9 +80,9 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 			BOILER_TOWN_MAP.put(boilerId, townId);
 
 			if (TOWN_MAP.containsKey(townId)) {
-				ConcurrentMap<Integer, BoilerAPV> boilerMap = TOWN_MAP.get(townId);
+				ConcurrentMap<Integer, Boiler> boilerMap = TOWN_MAP.get(townId);
 				if (boilerMap.containsKey(boilerId)) {
-					BoilerAPV boilerAPV = boilerMap.get(boilerId);
+					Boiler boilerAPV = boilerMap.get(boilerId);
 					if (!controlObject.getId().equals(0)) {
 						boilerAPV.getControlObjects().add(controlObject);
 					}
@@ -92,7 +93,7 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 					boilerMap.put(boilerId, boiler);
 				}
 			} else {
-				ConcurrentMap<Integer, BoilerAPV> boilerMap = new ConcurrentHashMap<>();
+				ConcurrentMap<Integer, Boiler> boilerMap = new ConcurrentHashMap<>();
 				if (!controlObject.getId().equals(0)) {
 					boiler.getControlObjects().add(controlObject);
 				}
@@ -102,11 +103,7 @@ public class BoilersAPVDaoImpl extends AbstractDao implements BoilersAPVDao {
 		}
 	}
 
-	public BoilersAPVDaoImpl() {
-		System.out.println("Creating instance");
-	}
-
-	public Map<Integer, Map<Integer, BoilerAPV>> getTownMap() {
+	public Map<Integer, Map<Integer, Boiler>> getTownMap() {
 		return Collections.unmodifiableMap(TOWN_MAP);
 	}
 

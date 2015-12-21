@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
+ * Объект-представление для данных о проверенной котельной.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Getter
