@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 /**
+ * Абстрактный класс для доступа к БД.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 public abstract class AbstractDao {

@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * Класс для получаения информации о всех приборах учата на котельных.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
