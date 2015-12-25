@@ -20,8 +20,6 @@ public class BoilerTownUIVO extends UIVO {
 
 	private String address;
 
-	private Integer paramValue;
-
 	private Integer boilerId;
 
 }
