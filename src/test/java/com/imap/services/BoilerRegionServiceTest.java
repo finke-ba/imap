@@ -1,29 +1,22 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersDao;
-import com.imap.domain.Boiler;
 import com.imap.uivo.BoilerRegionUIVO;
 import com.imap.uivo.BoilerTownUIVO;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public class BoilerRegionServiceTest extends AbstractBoilerTest{
+public class BoilerRegionServiceTest extends AbstractBoilerTest {
 
 	@Spy
 	protected BoilerTownService boilerTownService;

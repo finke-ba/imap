@@ -3,7 +3,6 @@ package com.imap.services;
 import com.imap.dao.BoilersDao;
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -96,12 +95,11 @@ public abstract class AbstractBoilerTest {
 		return townMap;
 	}
 
-	public HashMap<Integer, Integer> getBoilerTownMap(){
-
+	public HashMap<Integer, Integer> getBoilerTownMap() {
 		HashMap<Integer, Integer> boilerTownMap = new HashMap<Integer, Integer>() {{
 			put(1, 1);
 		}};
-
 		return boilerTownMap;
 	}
+
 }

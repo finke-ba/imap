@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.imap.services.BoilerTownService.*;
-
 /**
+ * Сервис для проверки и получения информации о всех котельных во всех городах в регионе.
+ *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 @Service
@@ -45,36 +45,20 @@ public class BoilerRegionService {
 	 * Преобразует список проверенных котельных в городе в объект, содержащий данные проверки города.
 	 *
 	 * @param townUIVOs список проверенных котельных в городе
-	 * @param id идентификатор города
+	 * @param townId идентификатор города
 	 * @return данные о проверенном городе
 	 */
-	private BoilerRegionUIVO addCheckedTown(List<BoilerTownUIVO> townUIVOs, Integer id) {
+	private BoilerRegionUIVO addCheckedTown(List<BoilerTownUIVO> townUIVOs, Integer townId) {
+		BoilerTownUIVO townUIVO = new BoilerTownUIVO();
+		townUIVO.setTownId(townId);
+		return mapBoilerRegionUIVO(boilerTownService.checkAddedUIVO(townUIVO, townUIVOs));
+	}
+
+	private BoilerRegionUIVO mapBoilerRegionUIVO(BoilerTownUIVO boilerTownUIVO) {
 		BoilerRegionUIVO regionUIVO = new BoilerRegionUIVO();
-
-		regionUIVO.setTownId(id);
-		if(!townUIVOs.isEmpty()) {
-			//Приборы учета для одной котельной
-			boolean isGreen = false;
-			for (BoilerTownUIVO townUIVO : townUIVOs) {
-				regionUIVO.setParamStatusId(townUIVO.getParamStatusId());
-				regionUIVO.setParamStatus("Снятие показаний не производится");
-				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
-					regionUIVO.setParamStatus("Показания вышли за допустимые пределы");
-					return regionUIVO;
-				}
-				if(townUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
-					isGreen = true;
-				}
-			}
-			if (isGreen) {
-				regionUIVO.setParamStatusId(PARAM_STATUS_GREEN);
-				regionUIVO.setParamStatus("Показания в рамках допустимых пределов");
-			}
-		} else {
-			regionUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
-			regionUIVO.setParamStatus("Снятие показаний не производится");
-		}
-
+		regionUIVO.setTownId(boilerTownUIVO.getTownId());
+		regionUIVO.setParamStatus(boilerTownUIVO.getParamStatus());
+		regionUIVO.setParamStatusId(boilerTownUIVO.getParamStatusId());
 		return regionUIVO;
 	}
 }

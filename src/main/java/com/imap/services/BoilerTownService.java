@@ -1,11 +1,9 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersDao;
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
 import com.imap.uivo.BoilerTownUIVO;
 import com.imap.uivo.UIVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,9 +71,11 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 		townUIVO.setBoilerId(boiler.getBoilerId());
 		townUIVO.setBoilerName(boiler.getBoilerName());
 		townUIVO.setAddress(boiler.getBoilerAddress());
+		return checkAddedUIVO(townUIVO, boilerTownUIVOs);
+	}
 
+	public BoilerTownUIVO checkAddedUIVO (BoilerTownUIVO townUIVO, List<BoilerTownUIVO> boilerTownUIVOs) {
 		if(!boilerTownUIVOs.isEmpty()) {
-			//Приборы учета для одной котельной
 			boolean isGreen = false;
 			for (UIVO boilerTownUIVO : boilerTownUIVOs) {
 				townUIVO.setParamStatusId(boilerTownUIVO.getParamStatusId());
@@ -96,7 +96,6 @@ public class BoilerTownService extends AbstractBoilerService<BoilerTownUIVO> {
 			townUIVO.setParamStatusId(PARAM_STATUS_YELLOW);
 			townUIVO.setParamStatus("Снятие показаний не производится");
 		}
-
 		return townUIVO;
 	}
 
