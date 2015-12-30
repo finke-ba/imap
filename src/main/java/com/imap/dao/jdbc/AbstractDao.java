@@ -15,20 +15,13 @@ public abstract class AbstractDao {
 
 	private JdbcTemplate jdbcTemplate;
 
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
-	}
-
-	public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
-		return namedParameterJdbcTemplate;
 	}
 
 }
