@@ -1,5 +1,5 @@
 
-$(document).ready(function drow(){
+$(document).ready(function draw(){
     var img = $('#imgmap');
     var canvas=$('#cnvs');
     //setInterval('updateTask()', 3000)
