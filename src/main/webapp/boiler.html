@@ -6,12 +6,13 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 	<script>
-		$(document).ready(function() {
+		$(document).ready(function () {
+			var url = window.location.origin;
 			var boilerId = getUrlParameter('boilerId');
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boiler?id=" + boilerId
-			}).then(function(data) {
+				url: url + "/imap/boiler/" + boilerId
+			}).then(function (data) {
 				var boilerName = data.boilerName;
 				var boilerAddress = data.address;
 				var townName = data.townName;
@@ -23,10 +24,10 @@
 			});
 
 			$.ajax({
-				url: "http://localhost:8080/imap/get/boiler/check?id=" + boilerId
-			}).then(function(data) {
-				var trHTML ='';
-				$.each(data, function(i, item) {
+				url: url + "/imap/boiler/" + boilerId + "/check"
+			}).then(function (data) {
+				var trHTML = '';
+				$.each(data, function (i, item) {
 					trHTML += getTr(item.paramStatusId) + "<td>" +
 							item.paramName + '</td><td>' +
 							item.paramValue + '</td><td>' +
@@ -38,17 +39,17 @@
 
 		});
 
-		function getTr(paramStatusId){
-			if (paramStatusId == 1){
+		function getTr(paramStatusId) {
+			if (paramStatusId == 1) {
 				return "<tr class='success'>";
-			} else if(paramStatusId == 2){
+			} else if (paramStatusId == 2) {
 				return "<tr class='warning'>";
-			} else if (paramStatusId ==3){
+			} else if (paramStatusId == 3) {
 				return "<tr class='danger'>";
 			}
 		}
 
-		function getDateFromTimeStamp(timestamp){
+		function getDateFromTimeStamp(timestamp) {
 			var d = new Date(timestamp),
 					yyyy = d.getFullYear(),
 					mm = ('0' + (d.getMonth() + 1)).slice(-2),
@@ -62,14 +63,12 @@
 		}
 
 
-		function getUrlParameter(sParam){
+		function getUrlParameter(sParam) {
 			var sPageURL = window.location.search.substring(1);
 			var sURLVariables = sPageURL.split('&');
-			for (var i = 0; i < sURLVariables.length; i++)
-			{
+			for (var i = 0; i < sURLVariables.length; i++) {
 				var sParameterName = sURLVariables[i].split('=');
-				if (sParameterName[0] == sParam)
-				{
+				if (sParameterName[0] == sParam) {
 					return sParameterName[1];
 				}
 			}
@@ -78,39 +77,39 @@
 	</script>
 </head>
 <body>
-	<div class='container'>
-		<div class='row vertical-offset-100'>
-			<div class='col-md-10 col-md-offset-1'>
-				<div class='panel panel-default'>
-					<div class='panel-heading'>
-						<h3 class='panel-title'>Показания котельной $name по адресу $address</h3>
-					</div>
+<div class='container'>
+	<div class='row vertical-offset-100'>
+		<div class='col-md-10 col-md-offset-1'>
+			<div class='panel panel-default'>
+				<div class='panel-heading'>
+					<h3 class='panel-title'>Показания котельной $name по адресу $address</h3>
+				</div>
 
-					<ul class='breadcrumb'>
-						<li><a href='index.html'>Карта</a></li>
-						<li><a href='town.html?townId=$townId'>$townId</a></li>
-						<li class='active'>$boilerName</li>
-					</ul>
+				<ul class='breadcrumb'>
+					<li><a href='index.html'>Карта</a></li>
+					<li><a href='town.html?townId=$townId'>$townId</a></li>
+					<li class='active'>$boilerName</li>
+				</ul>
 
-					<div class='panel-body'>
+				<div class='panel-body'>
 
-						<div class='table-responsive'>
-							<table id ="boiler_table" class='table table-hover'>
-								<thead>
-								<tr>
-									<th>Название параметра</th>
-									<th>Значение параметра</th>
-									<th>Время</th>
-									<th>Причина</th>
-								</tr>
-								</thead>
-							</table>
-						</div>
+					<div class='table-responsive'>
+						<table id="boiler_table" class='table table-hover'>
+							<thead>
+							<tr>
+								<th>Название параметра</th>
+								<th>Значение параметра</th>
+								<th>Время</th>
+								<th>Причина</th>
+							</tr>
+							</thead>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 </body>
 </html>

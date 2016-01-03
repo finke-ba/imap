@@ -1,6 +1,5 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersDao;
 import com.imap.domain.ControlObject;
 import com.imap.uivo.UIVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public abstract class AbstractBoilerService<U extends UIVO> {
 
 	/** Интерфейс доступа к данным по котельным в БД. */
 	@Autowired
-	protected BoilersDao boilersDao;
+	protected BoilerMapService boilerMapService;
 
 	/** Статус того, что данные удовлетворяют графику отопления. */
 	public final static Integer PARAM_STATUS_GREEN = 1;
@@ -76,7 +75,7 @@ public abstract class AbstractBoilerService<U extends UIVO> {
 	/**
 	 * Проверяет пробор учета на соответствие температурному графику, заданному линейно.
 	 *
-	 * @param controlObject прибор учета
+	 * @param controlObject        прибор учета
 	 * @param boilerControlObjects объект дл хранения списка проверенных приборов учета
 	 */
 	private void checkControlObject(ControlObject controlObject, List<U> boilerControlObjects) {
@@ -95,8 +94,8 @@ public abstract class AbstractBoilerService<U extends UIVO> {
 	/**
 	 * Проверяет значение параметра прибора учета на соответствие температурному графику, заданному линейно.
 	 *
-	 * @param paramValue значение параметра прибора учета
-	 * @param y допутсимый предел значения параметра прибора учета
+	 * @param paramValue    значение параметра прибора учета
+	 * @param y             допутсимый предел значения параметра прибора учета
 	 * @param controlObject прибор учета
 	 * @return проверенное значение параметра прибора учета
 	 */
@@ -119,7 +118,7 @@ public abstract class AbstractBoilerService<U extends UIVO> {
 	 * Преобразует данные прибора учета в представление для клиента.
 	 *
 	 * @param controlObject прибор учета
-	 * @param uivo проверенные значения параметра прибора учета
+	 * @param uivo          проверенные значения параметра прибора учета
 	 * @return проверенные значения параметра прибора учета в представлении для клиента
 	 */
 	protected abstract U mapControlObject(ControlObject controlObject, UIVO uivo);

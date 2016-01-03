@@ -1,6 +1,5 @@
 package com.imap.services;
 
-import com.imap.dao.BoilersDao;
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
 import org.mockito.Mock;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.when;
 public abstract class AbstractBoilerTest {
 
 	@Mock
-	protected BoilersDao boilersDao;
+	protected BoilerMapService boilerMapService;
 
 	@BeforeMethod
 	public void setUp() throws Exception {
@@ -29,8 +28,8 @@ public abstract class AbstractBoilerTest {
 
 		MockitoAnnotations.initMocks(this);
 
-		when(this.boilersDao.getTownMap()).thenReturn(townMap);
-		when(this.boilersDao.getBoilerTownMap()).thenReturn(boilerTownMap);
+		when(this.boilerMapService.getTownMap()).thenReturn(townMap);
+		when(this.boilerMapService.getBoilerTownMap()).thenReturn(boilerTownMap);
 	}
 
 	public HashMap<Integer, Map<Integer, Boiler>> getTownMap() {
@@ -59,32 +58,6 @@ public abstract class AbstractBoilerTest {
 		controlObjects1.add(co11);
 		controlObjects1.add(co12);
 		controlObjects1.add(co13);
-
-		Boiler boiler2 = new Boiler();
-		LinkedHashSet<ControlObject> controlObjects2 = new LinkedHashSet<>();
-		boiler2.setBoilerId(1);
-		boiler2.setBoilerName("Котельная №1");
-		boiler2.setTownName("Аксай");
-		boiler2.setBoilerAddress("ул.Дружбы, 7-б г.Аксай");
-		boiler2.setControlObjects(controlObjects2);
-		ControlObject co21 = new ControlObject();
-		co21.setParamName("T01");
-		co21.setParamValue(58.00);
-		co21.setDate(new Timestamp(1L));
-		co21.setId(63);
-		ControlObject co22 = new ControlObject();
-		co22.setParamName("T01");
-		co22.setParamValue(58.00);
-		co22.setDate(new Timestamp(1L));
-		co22.setId(63);
-		ControlObject co23 = new ControlObject();
-		co23.setParamName("T01");
-		co23.setParamValue(58.00);
-		co23.setDate(new Timestamp(1L));
-		co23.setId(63);
-		controlObjects2.add(co21);
-		controlObjects2.add(co22);
-		controlObjects2.add(co23);
 
 		HashMap<Integer, Map<Integer, Boiler>> townMap = new HashMap<Integer, Map<Integer, Boiler>>() {{
 			put(1, new HashMap<Integer, Boiler>() {{

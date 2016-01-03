@@ -1,8 +1,10 @@
-package com.imap.services;
+package com.imap.services.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
-import com.imap.uivo.BoilerTownUIVO;
+import com.imap.services.AbstractBoilerService;
+import com.imap.services.AbstractBoilerTest;
+import com.imap.uivo.TownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
 import org.mockito.InjectMocks;
@@ -17,20 +19,20 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public class BoilerServiceTest extends AbstractBoilerTest {
+public class BoilerServiceImplTest extends AbstractBoilerTest {
 
 	@InjectMocks
-	private BoilerService boilerService;
+	private BoilerServiceImpl boilerService;
 
 	@Test
 	public void testGetBoiler() throws Exception {
-		BoilerTownUIVO townUIVOActual = new BoilerTownUIVO();
+		TownUIVO townUIVOActual = new TownUIVO();
 		townUIVOActual.setBoilerName("Котельная №1");
 		townUIVOActual.setAddress("ул.Дружбы, 7-б г.Аксай");
 		townUIVOActual.setTownName("Аксай");
 		townUIVOActual.setTownId(1);
 
-		BoilerTownUIVO townUIVOExpected = boilerService.getBoiler(1);
+		TownUIVO townUIVOExpected = boilerService.getBoiler(1);
 
 		assertEquals(townUIVOActual.getBoilerName(), townUIVOExpected.getBoilerName());
 		assertEquals(townUIVOActual.getAddress(), townUIVOExpected.getAddress());

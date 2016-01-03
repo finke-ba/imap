@@ -1,11 +1,15 @@
-package com.imap.dao.jdbc;
+package com.imap.services.impl;
 
-import com.imap.dao.BoilersDao;
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
+import com.imap.services.BoilerMapService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -14,12 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Класс для получаения информации о всех приборах учата на котельных.
+ * Класс для получения информации о всех приборах учета на котельных.
  *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-@Service
-public class BoilersDaoImpl extends AbstractDao implements BoilersDao {
+@Repository
+public class BoilerMapServiceImpl implements BoilerMapService {
+
+	private JdbcTemplate jdbcTemplate;
 
 	/** Соотношение идентиикатора города к котельным в этом городе.(<TownId <BoilerId, Boiler>>) */
 	private static final ConcurrentMap<Integer, ConcurrentMap<Integer, Boiler>> TOWN_MAP = new ConcurrentHashMap<>();
@@ -55,6 +61,22 @@ public class BoilersDaoImpl extends AbstractDao implements BoilersDao {
 			" ORDER BY Town_ID, Boiler_ID, param_id, param_name" +
 			";";
 
+	@Autowired
+	private void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+	private JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	/** Обновляет раз в 5 минут данные о котельных в памяти. */
+	@Scheduled(fixedDelay = 300_000)
+	private void update() {
+		updateBoilersMap();
+	}
+
+	@Override
 	public void updateBoilersMap() {
 		CallbackHandler handler = new CallbackHandler();
 		getJdbcTemplate().query(SQL_GET_BOILERS_FOR_TOWN, handler);
@@ -105,10 +127,12 @@ public class BoilersDaoImpl extends AbstractDao implements BoilersDao {
 		}
 	}
 
+	@Override
 	public Map<Integer, Map<Integer, Boiler>> getTownMap() {
 		return Collections.unmodifiableMap(TOWN_MAP);
 	}
 
+	@Override
 	public Map<Integer, Integer> getBoilerTownMap() {
 		return Collections.unmodifiableMap(BOILER_TOWN_MAP);
 	}

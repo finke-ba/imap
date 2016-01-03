@@ -1,8 +1,10 @@
-package com.imap.services;
+package com.imap.services.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
-import com.imap.uivo.BoilerTownUIVO;
+import com.imap.services.AbstractBoilerService;
+import com.imap.services.AbstractBoilerTest;
+import com.imap.uivo.TownUIVO;
 import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
 import org.mockito.InjectMocks;
@@ -17,34 +19,34 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public class BoilerTownServiceTest extends AbstractBoilerTest {
+public class TownServiceImplTest extends AbstractBoilerTest {
 
 	@InjectMocks
-	private BoilerTownService boilerTownService;
+	private TownServiceImpl boilerTownService;
 
 	@Test
 	public void testGetTown() throws Exception {
-		BoilerTownUIVO townUIVOActual = new BoilerTownUIVO();
+		TownUIVO townUIVOActual = new TownUIVO();
 		townUIVOActual.setTownName(getTownMap().get(1).get(1).getTownName());
 
-		BoilerTownUIVO townUIVOExpected = boilerTownService.getTown(1);
+		TownUIVO townUIVOExpected = boilerTownService.getTown(1);
 
 		assertEquals(townUIVOActual.getTownName(), townUIVOExpected.getTownName());
 	}
 
 	@Test
 	public void testGetBoilersInTownChecked() throws Exception {
-		List<BoilerTownUIVO> boilersInTownCheckedActual = new ArrayList<>();
+		List<TownUIVO> boilersInTownCheckedActual = new ArrayList<>();
 
-		BoilerTownUIVO boilerTownUIVO1 = new BoilerTownUIVO();
-		boilersInTownCheckedActual.add(boilerTownUIVO1);
-		boilerTownUIVO1.setAddress("ул.Дружбы, 7-б г.Аксай");
-		boilerTownUIVO1.setBoilerId(1);
-		boilerTownUIVO1.setBoilerName("Котельная №1");
-		boilerTownUIVO1.setParamStatus("Показания вышли за допустимые пределы");
-		boilerTownUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
+		TownUIVO townUIVO1 = new TownUIVO();
+		boilersInTownCheckedActual.add(townUIVO1);
+		townUIVO1.setAddress("ул.Дружбы, 7-б г.Аксай");
+		townUIVO1.setBoilerId(1);
+		townUIVO1.setBoilerName("Котельная №1");
+		townUIVO1.setParamStatus("Показания вышли за допустимые пределы");
+		townUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
 
-		List<BoilerTownUIVO> boilersInTownCheckedExpected = boilerTownService.getBoilersInTownChecked(1);
+		List<TownUIVO> boilersInTownCheckedExpected = boilerTownService.getTownChecked(1);
 
 		assertEquals(boilersInTownCheckedActual.get(0).getAddress(), boilersInTownCheckedExpected.get(0).getAddress());
 		assertEquals(boilersInTownCheckedActual.get(0).getBoilerId(), boilersInTownCheckedExpected.get(0).getBoilerId());
@@ -55,17 +57,17 @@ public class BoilerTownServiceTest extends AbstractBoilerTest {
 
 	@Test
 	public void testCheckTown() throws Exception {
-		List<BoilerTownUIVO> boilersInTownCheckedActual = new ArrayList<>();
+		List<TownUIVO> boilersInTownCheckedActual = new ArrayList<>();
 
-		BoilerTownUIVO boilerTownUIVO1 = new BoilerTownUIVO();
-		boilersInTownCheckedActual.add(boilerTownUIVO1);
-		boilerTownUIVO1.setAddress("ул.Дружбы, 7-б г.Аксай");
-		boilerTownUIVO1.setBoilerId(1);
-		boilerTownUIVO1.setBoilerName("Котельная №1");
-		boilerTownUIVO1.setParamStatus("Показания вышли за допустимые пределы");
-		boilerTownUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
+		TownUIVO townUIVO1 = new TownUIVO();
+		boilersInTownCheckedActual.add(townUIVO1);
+		townUIVO1.setAddress("ул.Дружбы, 7-б г.Аксай");
+		townUIVO1.setBoilerId(1);
+		townUIVO1.setBoilerName("Котельная №1");
+		townUIVO1.setParamStatus("Показания вышли за допустимые пределы");
+		townUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
 
-		List<BoilerTownUIVO> boilersInTownCheckedExpected = boilerTownService.checkTown(getTownMap().get(1));
+		List<TownUIVO> boilersInTownCheckedExpected = boilerTownService.getTownChecked(getTownMap().get(1));
 
 		assertEquals(boilersInTownCheckedActual.get(0).getAddress(), boilersInTownCheckedExpected.get(0).getAddress());
 		assertEquals(boilersInTownCheckedActual.get(0).getBoilerId(), boilersInTownCheckedExpected.get(0).getBoilerId());
@@ -91,7 +93,7 @@ public class BoilerTownServiceTest extends AbstractBoilerTest {
 		uivo.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
 		uivo.setParamStatus("Предел 52.386");
 
-		BoilerTownUIVO townUIVOExpected = boilerTownService.mapControlObject(co, uivo);
+		TownUIVO townUIVOExpected = boilerTownService.mapControlObject(co, uivo);
 
 		assertEquals(boilerUIVOActual.getParamStatusId(), townUIVOExpected.getParamStatusId());
 		assertEquals(boilerUIVOActual.getParamStatus(), townUIVOExpected.getParamStatus());
@@ -99,56 +101,56 @@ public class BoilerTownServiceTest extends AbstractBoilerTest {
 
 	@Test
 	public void testCheckBoiler() throws Exception {
-		List<BoilerTownUIVO> boilerUIVOsActual = new ArrayList<>();
+		List<TownUIVO> boilerUIVOsActual = new ArrayList<>();
 
-		BoilerTownUIVO boilerTownUIVOActual1 = new BoilerTownUIVO();
-		boilerUIVOsActual.add(boilerTownUIVOActual1);
-		boilerTownUIVOActual1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
-		boilerTownUIVOActual1.setParamStatus("Предел 52.386");
+		TownUIVO townUIVOActual1 = new TownUIVO();
+		boilerUIVOsActual.add(townUIVOActual1);
+		townUIVOActual1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
+		townUIVOActual1.setParamStatus("Предел 52.386");
 
-		BoilerTownUIVO boilerTownUIVOActual2 = new BoilerTownUIVO();
-		boilerUIVOsActual.add(boilerTownUIVOActual2);
-		boilerTownUIVOActual2.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
-		boilerTownUIVOActual2.setParamStatus("Предел 36.386");
+		TownUIVO townUIVOActual2 = new TownUIVO();
+		boilerUIVOsActual.add(townUIVOActual2);
+		townUIVOActual2.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
+		townUIVOActual2.setParamStatus("Предел 36.386");
 
-		BoilerTownUIVO boilerTownUIVOActual3 = new BoilerTownUIVO();
-		boilerUIVOsActual.add(boilerTownUIVOActual3);
-		boilerTownUIVOActual3.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
-		boilerTownUIVOActual3.setParamStatus("Показания вышли за пределы +/- 10°C 41.386");
+		TownUIVO townUIVOActual3 = new TownUIVO();
+		boilerUIVOsActual.add(townUIVOActual3);
+		townUIVOActual3.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
+		townUIVOActual3.setParamStatus("Показания вышли за пределы +/- 10°C 41.386");
 
 		Boiler boiler = getTownMap().get(1).get(1);
-		List<BoilerTownUIVO> boilerTownUIVOsExpected = boilerTownService.checkBoiler(boiler.getControlObjects());
+		List<TownUIVO> townUIVOsExpected = boilerTownService.checkBoiler(boiler.getControlObjects());
 
-		assertEquals(boilerUIVOsActual.get(0).getParamStatusId(), boilerTownUIVOsExpected.get(0).getParamStatusId());
-		assertEquals(boilerUIVOsActual.get(0).getParamStatus(), boilerTownUIVOsExpected.get(0).getParamStatus());
+		assertEquals(boilerUIVOsActual.get(0).getParamStatusId(), townUIVOsExpected.get(0).getParamStatusId());
+		assertEquals(boilerUIVOsActual.get(0).getParamStatus(), townUIVOsExpected.get(0).getParamStatus());
 
-		assertEquals(boilerUIVOsActual.get(1).getParamStatusId(), boilerTownUIVOsExpected.get(1).getParamStatusId());
-		assertEquals(boilerUIVOsActual.get(1).getParamStatus(), boilerTownUIVOsExpected.get(1).getParamStatus());
+		assertEquals(boilerUIVOsActual.get(1).getParamStatusId(), townUIVOsExpected.get(1).getParamStatusId());
+		assertEquals(boilerUIVOsActual.get(1).getParamStatus(), townUIVOsExpected.get(1).getParamStatus());
 
-		assertEquals(boilerUIVOsActual.get(2).getParamStatusId(), boilerTownUIVOsExpected.get(2).getParamStatusId());
-		assertEquals(boilerUIVOsActual.get(2).getParamStatus(), boilerTownUIVOsExpected.get(2).getParamStatus());
+		assertEquals(boilerUIVOsActual.get(2).getParamStatusId(), townUIVOsExpected.get(2).getParamStatusId());
+		assertEquals(boilerUIVOsActual.get(2).getParamStatus(), townUIVOsExpected.get(2).getParamStatus());
 	}
 
 	@Test
 	public void testCheckAddedUIVORed() throws Exception {
-		BoilerTownUIVO townUIVOActual = new BoilerTownUIVO();
+		TownUIVO townUIVOActual = new TownUIVO();
 		townUIVOActual.setParamStatus("Показания вышли за допустимые пределы");
 		townUIVOActual.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
 
-		List<BoilerTownUIVO> boilerTownUIVOs = new ArrayList<>();
-		BoilerTownUIVO townUIVO1 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO1);
+		List<TownUIVO> townUIVOs = new ArrayList<>();
+		TownUIVO townUIVO1 = new TownUIVO();
+		townUIVOs.add(townUIVO1);
 		townUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_RED);
 
-		BoilerTownUIVO townUIVO2 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO2);
+		TownUIVO townUIVO2 = new TownUIVO();
+		townUIVOs.add(townUIVO2);
 		townUIVO2.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
 
-		BoilerTownUIVO townUIVO3 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO3);
+		TownUIVO townUIVO3 = new TownUIVO();
+		townUIVOs.add(townUIVO3);
 		townUIVO3.setParamStatusId(AbstractBoilerService.PARAM_STATUS_YELLOW);
 
-		BoilerTownUIVO townUIVOExpected = boilerTownService.checkAddedUIVO(new BoilerTownUIVO(), boilerTownUIVOs);
+		TownUIVO townUIVOExpected = boilerTownService.mapCheckedTown(new TownUIVO(), townUIVOs);
 
 		assertEquals(townUIVOActual.getParamStatus(), townUIVOExpected.getParamStatus());
 		assertEquals(townUIVOActual.getParamStatusId(), townUIVOExpected.getParamStatusId());
@@ -157,20 +159,20 @@ public class BoilerTownServiceTest extends AbstractBoilerTest {
 
 	@Test
 	public void testCheckAddedUIVOGreen() throws Exception {
-		BoilerTownUIVO townUIVOActual = new BoilerTownUIVO();
+		TownUIVO townUIVOActual = new TownUIVO();
 		townUIVOActual.setParamStatus("Показания в рамках допустимых пределов");
 		townUIVOActual.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
 
-		List<BoilerTownUIVO> boilerTownUIVOs = new ArrayList<>();
-		BoilerTownUIVO townUIVO1 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO1);
+		List<TownUIVO> townUIVOs = new ArrayList<>();
+		TownUIVO townUIVO1 = new TownUIVO();
+		townUIVOs.add(townUIVO1);
 		townUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_GREEN);
 
-		BoilerTownUIVO townUIVO2 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO2);
+		TownUIVO townUIVO2 = new TownUIVO();
+		townUIVOs.add(townUIVO2);
 		townUIVO2.setParamStatusId(AbstractBoilerService.PARAM_STATUS_YELLOW);
 
-		BoilerTownUIVO townUIVOExpected = boilerTownService.checkAddedUIVO(new BoilerTownUIVO(), boilerTownUIVOs);
+		TownUIVO townUIVOExpected = boilerTownService.mapCheckedTown(new TownUIVO(), townUIVOs);
 
 		assertEquals(townUIVOActual.getParamStatus(), townUIVOExpected.getParamStatus());
 		assertEquals(townUIVOActual.getParamStatusId(), townUIVOExpected.getParamStatusId());
@@ -178,25 +180,25 @@ public class BoilerTownServiceTest extends AbstractBoilerTest {
 
 	@Test
 	public void testCheckAddedUIVOYellow() throws Exception {
-		BoilerTownUIVO townUIVOActual = new BoilerTownUIVO();
+		TownUIVO townUIVOActual = new TownUIVO();
 		townUIVOActual.setParamStatus("Снятие показаний не производится");
 		townUIVOActual.setParamStatusId(AbstractBoilerService.PARAM_STATUS_YELLOW);
 
-		List<BoilerTownUIVO> boilerTownUIVOs = new ArrayList<>();
-		BoilerTownUIVO townUIVO1 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO1);
+		List<TownUIVO> townUIVOs = new ArrayList<>();
+		TownUIVO townUIVO1 = new TownUIVO();
+		townUIVOs.add(townUIVO1);
 		townUIVO1.setParamStatusId(AbstractBoilerService.PARAM_STATUS_YELLOW);
 
-		BoilerTownUIVO townUIVO2 = new BoilerTownUIVO();
-		boilerTownUIVOs.add(townUIVO2);
+		TownUIVO townUIVO2 = new TownUIVO();
+		townUIVOs.add(townUIVO2);
 		townUIVO2.setParamStatusId(AbstractBoilerService.PARAM_STATUS_YELLOW);
 
-		BoilerTownUIVO townUIVOExpected = boilerTownService.checkAddedUIVO(new BoilerTownUIVO(), boilerTownUIVOs);
+		TownUIVO townUIVOExpected = boilerTownService.mapCheckedTown(new TownUIVO(), townUIVOs);
 
 		assertEquals(townUIVOActual.getParamStatus(), townUIVOExpected.getParamStatus());
 		assertEquals(townUIVOActual.getParamStatusId(), townUIVOExpected.getParamStatusId());
 
-		BoilerTownUIVO townUIVOExpected2 = boilerTownService.checkAddedUIVO(new BoilerTownUIVO(), new ArrayList<>());
+		TownUIVO townUIVOExpected2 = boilerTownService.mapCheckedTown(new TownUIVO(), new ArrayList<>());
 		assertEquals(townUIVOActual.getParamStatus(), townUIVOExpected2.getParamStatus());
 		assertEquals(townUIVOActual.getParamStatusId(), townUIVOExpected2.getParamStatusId());
 

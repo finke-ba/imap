@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BoilerTownUIVO extends UIVO {
+public class TownUIVO extends UIVO {
 
 	private String townName;
 
