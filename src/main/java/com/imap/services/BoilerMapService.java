@@ -12,11 +12,6 @@ import java.util.Map;
 public interface BoilerMapService {
 
 	/**
-	 *  Обновляет данные о котельных.
-	 */
-	void updateBoilersMap();
-
-	/**
 	 * Возвращает данные обо всех приборах учета на котельных. Данные хранятся в виде карты, где
 	 * Map<Integer(идентификатор города), Map<Integer(идентификатор котельной), Boiler(данные о котельной)>>.
 	 *

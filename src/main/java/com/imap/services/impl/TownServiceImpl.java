@@ -2,6 +2,7 @@ package com.imap.services.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.services.AbstractBoilerService;
 import com.imap.services.TownService;
 import com.imap.uivo.TownUIVO;
@@ -21,19 +22,28 @@ import java.util.Map;
 public class TownServiceImpl extends AbstractBoilerService<TownUIVO> implements TownService {
 
 	@Override
-	public TownUIVO getTown(Integer id) {
+	public TownUIVO getTown(Integer id) throws NoSuchItemException {
 		TownUIVO townUIVO = new TownUIVO();
 		Map<Integer, Boiler> boilerMap = boilerMapService.getTownMap().get(id);
-		if (!boilerMap.isEmpty()) {
-			Map.Entry<Integer, Boiler> boilerAPVEntry = boilerMap.entrySet().iterator().next();
-			townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
+
+		if (boilerMap == null || boilerMap.isEmpty()) {
+			throw new NoSuchItemException();
 		}
+
+		Map.Entry<Integer, Boiler> boilerAPVEntry = boilerMap.entrySet().iterator().next();
+		townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
+
 		return townUIVO;
 	}
 
 	@Override
-	public List<TownUIVO> getTownChecked(int id) {
+	public List<TownUIVO> getTownChecked(int id) throws NoSuchItemException {
 		Map<Integer, Map<Integer, Boiler>> townMap = boilerMapService.getTownMap();
+
+		if (townMap == null || townMap.isEmpty()) {
+			throw new NoSuchItemException();
+		}
+
 		return getTownChecked(townMap.get(id));
 	}
 
@@ -50,7 +60,7 @@ public class TownServiceImpl extends AbstractBoilerService<TownUIVO> implements 
 	 * Преобразует список проверенных приборов учета котельной в объект, содержащий данные проверки этой котельной.
 	 *
 	 * @param townUIVOs список проверенных приборов учета котельной
-	 * @param boiler информация о котельной
+	 * @param boiler    информация о котельной
 	 * @return данные о проверенной котельной
 	 */
 	private TownUIVO addCheckedBoiler(List<TownUIVO> townUIVOs, Boiler boiler) {
@@ -63,16 +73,16 @@ public class TownServiceImpl extends AbstractBoilerService<TownUIVO> implements 
 
 	@Override
 	public TownUIVO mapCheckedTown(TownUIVO townUIVO, List<TownUIVO> townUIVOs) {
-		if(!townUIVOs.isEmpty()) {
+		if (!townUIVOs.isEmpty()) {
 			boolean isGreen = false;
 			for (UIVO boilerTownUIVO : townUIVOs) {
 				townUIVO.setParamStatusId(boilerTownUIVO.getParamStatusId());
 				townUIVO.setParamStatus("Снятие показаний не производится");
-				if(boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
+				if (boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_RED)) {
 					townUIVO.setParamStatus("Показания вышли за допустимые пределы");
 					return townUIVO;
 				}
-				if(boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
+				if (boilerTownUIVO.getParamStatusId().equals(PARAM_STATUS_GREEN)) {
 					isGreen = true;
 				}
 			}

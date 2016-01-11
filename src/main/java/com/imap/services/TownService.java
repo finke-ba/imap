@@ -1,6 +1,7 @@
 package com.imap.services;
 
 import com.imap.domain.Boiler;
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.uivo.TownUIVO;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface TownService {
 	 * @param id идентификатор города
 	 * @return информацию городе
 	 */
-	TownUIVO getTown(Integer id);
+	TownUIVO getTown(Integer id) throws NoSuchItemException;
 
 	/**
 	 * Получает список проверенных котельных в определенном городе.
@@ -27,7 +28,7 @@ public interface TownService {
 	 * @param id идентификатор города
 	 * @return список проверенных котельных
 	 */
-	List<TownUIVO> getTownChecked(int id);
+	List<TownUIVO> getTownChecked(int id) throws NoSuchItemException;
 
 	/**
 	 * Проверяет все котельные в одном городе.
@@ -40,7 +41,7 @@ public interface TownService {
 	/**
 	 * Преобразует список проверенных приборов учета в объект, содержащий данные проверки.
 	 *
-	 * @param townUIVO данные о проверенной котельной
+	 * @param townUIVO  данные о проверенной котельной
 	 * @param townUIVOs список проверенных приборов учета
 	 * @return данные о проверенной котельной
 	 */

@@ -1,5 +1,6 @@
 package com.imap.services;
 
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.uivo.TownUIVO;
 import com.imap.uivo.BoilerUIVO;
 
@@ -18,7 +19,7 @@ public interface BoilerService {
 	 * @param id - идентификатор котельной
 	 * @return информация о котельной
 	 */
-	TownUIVO getBoiler(int id);
+	TownUIVO getBoiler(int id) throws NoSuchItemException;
 
 	/**
 	 * Получает список проверенных приборов учета на одной котельной.
@@ -26,6 +27,6 @@ public interface BoilerService {
 	 * @param boilerId - идентификатор котельной
 	 * @return список проверенных приборов учета на котельной
 	 */
-	List<BoilerUIVO> getBoilerChecked(int boilerId);
+	List<BoilerUIVO> getBoilerChecked(int boilerId) throws NoSuchItemException;
 
 }

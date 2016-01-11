@@ -1,5 +1,6 @@
 package com.imap.controllers;
 
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.services.TownService;
 import com.imap.uivo.TownUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class TownController {
 	private TownService boilerTownService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public TownUIVO getTownNameNew(@PathVariable int id) {
+	public TownUIVO getTownName(@PathVariable int id) throws NoSuchItemException {
 		return boilerTownService.getTown(id);
 	}
 
 	@RequestMapping(value = "/{id}/check", method = RequestMethod.GET)
-	public List<TownUIVO> getBoilersForTownCheck(@PathVariable int id) {
+	public List<TownUIVO> getBoilersForTownCheck(@PathVariable int id) throws NoSuchItemException {
 		return boilerTownService.getTownChecked(id);
 	}
 

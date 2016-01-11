@@ -36,6 +36,9 @@ function updateTask() {
 	$.ajax({
 		url: url + "/imap/region/check"
 	}).then(function (data) {
+		if (data.length == 0) {
+			drawBoilerTown("all", "yellow");
+		}
 		for (var i = 0; i < data.length; i++) {
 			var counter = data[i];
 			drawBoilerTown(counter.townId, counter.paramStatusId);
@@ -84,6 +87,19 @@ function drawBoilerTown(town, colorId) {
 			drawTown(410, 400, "Цимлянск", 421, 406, color);
 			break;
 		case 11:
+			drawTown(200, 385, "Шахты", 211, 391, color);
+			break;
+		case "all":
+			drawTown(173, 459, "Аксай", 185, 465, color);
+			drawTown(160, 480, "Батайск", 173, 486, color);
+			drawTown(275, 320, "Белая Калитва", 287, 327, color);
+			drawTown(190, 335, "Гуково", 115, 340, color);
+			drawTown(190, 290, "Донецк", 110, 295, color);
+			drawTown(212, 340, "Зверево", 223, 347, color);
+			drawTown(220, 300, "Каменск", 231, 307, color);
+			drawTown(235, 200, "Миллерово", 247, 206, color);
+			drawTown(355, 580, "Сальск", 367, 587, color);
+			drawTown(410, 400, "Цимлянск", 421, 406, color);
 			drawTown(200, 385, "Шахты", 211, 391, color);
 			break;
 	}
