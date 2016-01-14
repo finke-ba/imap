@@ -1,35 +1,33 @@
-package com.imap.services;
+package com.imap.services.validation.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
+import com.imap.services.BoilerMapService;
+import com.imap.uivo.BoilerUIVO;
+import com.imap.uivo.RegionUIVO;
+import com.imap.uivo.TownUIVO;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.*;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public abstract class AbstractBoilerTest {
+public class AbstractBoilerValidationServiceTest {
 
 	@Mock
 	protected BoilerMapService boilerMapService;
 
 	@BeforeMethod
 	public void setUp() throws Exception {
-		HashMap<Integer, Map<Integer, Boiler>> townMap = getTownMap();
-		HashMap<Integer, Integer> boilerTownMap = getBoilerTownMap();
-
 		MockitoAnnotations.initMocks(this);
-
-		when(this.boilerMapService.getTownMap()).thenReturn(townMap);
-		when(this.boilerMapService.getBoilerTownMap()).thenReturn(boilerTownMap);
 	}
 
 	public HashMap<Integer, Map<Integer, Boiler>> getTownMap() {
@@ -59,20 +57,32 @@ public abstract class AbstractBoilerTest {
 		controlObjects1.add(co12);
 		controlObjects1.add(co13);
 
-		HashMap<Integer, Map<Integer, Boiler>> townMap = new HashMap<Integer, Map<Integer, Boiler>>() {{
+		return new HashMap<Integer, Map<Integer, Boiler>>() {{
 			put(1, new HashMap<Integer, Boiler>() {{
 				put(1, boiler1);
 			}});
 		}};
-
-		return townMap;
 	}
 
 	public HashMap<Integer, Integer> getBoilerTownMap() {
-		HashMap<Integer, Integer> boilerTownMap = new HashMap<Integer, Integer>() {{
+		return new HashMap<Integer, Integer>() {{
 			put(1, 1);
 		}};
-		return boilerTownMap;
+	}
+
+	public Map<Integer, List<TownUIVO>> getTownCheckedMap() {
+		List<TownUIVO> townList = new ArrayList<>();
+		TownUIVO townUIVO = new TownUIVO();
+		townList.add(townUIVO);
+		townUIVO.setBoilerAddress("ул.Дружбы, 7-б г.Аксай");
+		townUIVO.setBoilerId(1);
+		townUIVO.setBoilerName("Котельная №1");
+		townUIVO.setParamStatus("Показания вышли за допустимые пределы");
+		townUIVO.setParamStatusId(AbstractBoilerValidationService.PARAM_STATUS_RED);
+
+		return new HashMap<Integer, List<TownUIVO>>() {{
+			put(1, townList);
+		}};
 	}
 
 }

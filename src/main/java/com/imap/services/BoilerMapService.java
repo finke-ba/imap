@@ -1,7 +1,11 @@
 package com.imap.services;
 
 import com.imap.domain.Boiler;
+import com.imap.uivo.BoilerUIVO;
+import com.imap.uivo.RegionUIVO;
+import com.imap.uivo.TownUIVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,11 +24,34 @@ public interface BoilerMapService {
 	Map<Integer, Map<Integer, Boiler>> getTownMap();
 
 	/**
-	 * Возвращет связку идентификатор котельной - идентификатор города, где
-	 * Map<Integer(идентификатор котельной), Integer(идентификатор города)>.
+	 * Возвращет связку: идентификатор котельной - идентификатор города.
+	 * Где Map<Integer(идентификатор котельной), Integer(идентификатор города)>.
 	 *
-	 * @return связку идентификатор котельной - идентификатор города
+	 * @return связка идентификатор котельной - идентификатор города
 	 */
 	Map<Integer, Integer> getBoilerTownMap();
+
+	/**
+	 * Возвращет связку:  идентификатор котельной - список проверенных приборов учета на одной котельной.
+	 * Где Map<Integer(идентификатор котельной), List<BoilerUIVO>(список проверенных приборов учета)>.
+	 *
+	 * @return связка идентификатор котельной - список проверенных приборов учета
+	 */
+	Map<Integer, List<BoilerUIVO>> getBoilerChecked();
+
+	/**
+	 * Возвращет связку: идентификатор города - список проверенных котельных в определенном городе.
+	 * Где Map<Integer(идентификатор города), List<TownUIVO>(список проверенных котельных)>.
+	 *
+	 * @return связка идентификатор котельной - список проверенных котельных
+	 */
+	Map<Integer, List<TownUIVO>> getTownChecked();
+
+	/**
+	 * Возвращает список с проверенными данными котельных в регионе.
+	 *
+	 * @return список с проверенными данными котельных в регионе
+	 */
+	List<RegionUIVO> getRegionChecked();
 
 }

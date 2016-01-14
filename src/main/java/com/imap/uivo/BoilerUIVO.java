@@ -19,7 +19,7 @@ public class BoilerUIVO extends UIVO {
 
 	private String paramValue;
 
-	private String date;
+	private String paramDate;
 
 	private String boilerName;
 

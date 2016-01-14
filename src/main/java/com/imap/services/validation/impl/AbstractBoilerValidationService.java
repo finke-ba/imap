@@ -1,6 +1,7 @@
-package com.imap.services;
+package com.imap.services.validation.impl;
 
 import com.imap.domain.ControlObject;
+import com.imap.services.BoilerMapService;
 import com.imap.uivo.UIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,11 +14,7 @@ import java.util.List;
  *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
-public abstract class AbstractBoilerService<U extends UIVO> {
-
-	/** Интерфейс доступа к данным по котельным в БД. */
-	@Autowired
-	protected BoilerMapService boilerMapService;
+public abstract class AbstractBoilerValidationService<U extends UIVO> {
 
 	/** Статус того, что данные удовлетворяют графику отопления. */
 	public final static Integer PARAM_STATUS_GREEN = 1;

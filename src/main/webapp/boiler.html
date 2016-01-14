@@ -14,7 +14,7 @@
 				url: url + "/imap/boiler/" + boilerId
 			}).then(function (data) {
 				var boilerName = data.boilerName;
-				var boilerAddress = data.address;
+				var boilerAddress = data.boilerAddress;
 				var townName = data.townName;
 				var townId = data.townId;
 				$('.breadcrumb li:nth-child(2) > a').text(townName);
@@ -31,7 +31,7 @@
 					trHTML += getTr(item.paramStatusId) + "<td>" +
 							item.paramName + '</td><td>' +
 							item.paramValue + '</td><td>' +
-							item.date + '</td><td>' +
+							item.paramDate + '</td><td>' +
 							item.paramStatus + '</td></tr>';
 				});
 				$('#boiler_table').append(trHTML);

@@ -1,7 +1,9 @@
 package com.imap.dao;
 
 import com.imap.domain.Boiler;
+import com.imap.domain.BoilerRegion;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,21 +14,10 @@ import java.util.Map;
 public interface BoilerDao {
 
 	/**
-	 * Обновляет данные о котельных.
-	 */
-	void updateBoilersMap();
-
-	/**
-	 * Получает данные о котельных.
+	 * Получает список всех котельных в регионе.
 	 *
-	 * @return данные о котельных
+	 * @return список всех котельных в регионе
 	 */
-	Map<Integer, Map<Integer, Boiler>> getTownMap();
+	List<BoilerRegion> getBoilerRegion();
 
-	/**
-	 * Получает соотношение идентификатора котельной к идентификатору города, в котором находится котельная.
-	 *
-	 * @return соотношение идентификатора котельной к идентификатору города
-	 */
-	Map<Integer, Integer> getBoilerTownMap();
 }

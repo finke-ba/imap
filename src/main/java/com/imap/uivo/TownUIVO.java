@@ -12,14 +12,14 @@ import lombok.Setter;
 @Setter
 public class TownUIVO extends UIVO {
 
+	private Integer townId;
+
 	private String townName;
 
-	private Integer townId;
+	private Integer boilerId;
 
 	private String boilerName;
 
-	private String address;
-
-	private Integer boilerId;
+	private String boilerAddress;
 
 }
