@@ -17,9 +17,7 @@ import java.util.List;
 @Repository
 public class BoilerDaoImpl extends AbstractDao implements BoilerDao, RowMapper<BoilerRegion> {
 
-	/**
-	 * Запрос для получения данных о всех котельных в регионе.
-	 */
+	/** Запрос для получения данных о всех котельных в регионе.*/
 	private static final String SQL_GET_BOILERS_FOR_REGION =
 			" SELECT t.ru_city, t.ID AS town_id, tj.*" +
 			" FROM towns t" +

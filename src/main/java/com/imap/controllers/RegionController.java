@@ -1,5 +1,6 @@
 package com.imap.controllers;
 
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.services.RegionService;
 import com.imap.uivo.RegionUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class RegionController {
 	private RegionService boilerRegionService;
 
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
-	public List<RegionUIVO> getBoilersForRegionCheck() {
+	public List<RegionUIVO> getBoilersForRegionCheck() throws NoSuchItemException {
 		return boilerRegionService.getBoilersForRegionChecked();
 	}
 

@@ -25,7 +25,7 @@ public class RegionValidationServiceImpl implements RegionValidationService {
 	private TownValidationService townValidationService;
 
 	@Override
-	public List<RegionUIVO> getRegionListChecked(Map<Integer, Map<Integer, Boiler>> townMap) {
+	public List<RegionUIVO> getRegionChecked(Map<Integer, Map<Integer, Boiler>> townMap) {
 		List<RegionUIVO> regionUIVOs = new ArrayList<>();
 		townMap.forEach((k, v) -> regionUIVOs.add(addCheckedTown(townValidationService.getTownChecked(v), k)));
 		return regionUIVOs;

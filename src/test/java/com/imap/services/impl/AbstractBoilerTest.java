@@ -2,7 +2,7 @@ package com.imap.services.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
-import com.imap.services.BoilerMapService;
+import com.imap.services.ValidationCacheService;
 import com.imap.services.validation.impl.AbstractBoilerValidationService;
 import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.RegionUIVO;
@@ -22,18 +22,15 @@ import static org.mockito.Mockito.when;
 public abstract class AbstractBoilerTest {
 
 	@Mock
-	protected BoilerMapService boilerMapService;
+	protected ValidationCacheService validationCacheService;
 
 	@BeforeMethod
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		when(this.boilerMapService.getTownMap()).thenReturn(getTownMap());
-		when(this.boilerMapService.getBoilerTownMap()).thenReturn(getBoilerTownMap());
-
-		when(this.boilerMapService.getBoilerChecked()).thenReturn(getBoilerCheckedMap());
-		when(this.boilerMapService.getTownChecked()).thenReturn(getTownCheckedMap());
-		when(this.boilerMapService.getRegionChecked()).thenReturn(getRegionCheckedList());
+		when(this.validationCacheService.getBoilerChecked(1)).thenReturn(getBoilerChecked());
+		when(this.validationCacheService.getTownChecked(1)).thenReturn(getTownChecked());
+		when(this.validationCacheService.getRegionChecked()).thenReturn(getRegionCheckedList());
 	}
 
 	public HashMap<Integer, Map<Integer, Boiler>> getTownMap() {
@@ -70,13 +67,7 @@ public abstract class AbstractBoilerTest {
 		}};
 	}
 
-	public HashMap<Integer, Integer> getBoilerTownMap() {
-		return new HashMap<Integer, Integer>() {{
-			put(1, 1);
-		}};
-	}
-
-	public Map<Integer, List<BoilerUIVO>> getBoilerCheckedMap() {
+	public List<BoilerUIVO> getBoilerChecked() {
 		List<BoilerUIVO> boilerList = new ArrayList<>();
 		BoilerUIVO boilerUIVO = new BoilerUIVO();
 		boilerList.add(boilerUIVO);
@@ -86,12 +77,10 @@ public abstract class AbstractBoilerTest {
 		boilerUIVO.setParamStatusId(AbstractBoilerValidationService.PARAM_STATUS_GREEN);
 		boilerUIVO.setParamStatus("Предел 52.386");
 
-		return new HashMap<Integer, List<BoilerUIVO>>() {{
-			put(1, boilerList);
-		}};
+		return boilerList;
 	}
 
-	public Map<Integer, List<TownUIVO>> getTownCheckedMap() {
+	public List<TownUIVO> getTownChecked() {
 		List<TownUIVO> townList = new ArrayList<>();
 		TownUIVO townUIVO = new TownUIVO();
 		townList.add(townUIVO);
@@ -101,9 +90,7 @@ public abstract class AbstractBoilerTest {
 		townUIVO.setParamStatus("Показания вышли за допустимые пределы");
 		townUIVO.setParamStatusId(AbstractBoilerValidationService.PARAM_STATUS_RED);
 
-		return new HashMap<Integer, List<TownUIVO>>() {{
-			put(1, townList);
-		}};
+		return townList;
 	}
 
 	public List<RegionUIVO> getRegionCheckedList() {
@@ -116,6 +103,5 @@ public abstract class AbstractBoilerTest {
 
 		return regionList;
 	}
-
 
 }

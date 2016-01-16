@@ -1,6 +1,7 @@
 package com.imap.services.impl;
 
-import com.imap.services.BoilerMapService;
+import com.imap.exceptions.NoSuchItemException;
+import com.imap.services.ValidationCacheService;
 import com.imap.services.RegionService;
 import com.imap.uivo.RegionUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,13 @@ import java.util.List;
 @Service
 public class RegionServiceImpl implements RegionService {
 
-	/** Интерфейс доступа к данным по котельным. */
+	/** Интерфейс доступа к кэшированным данным по региону. */
 	@Autowired
-	private BoilerMapService boilerMapService;
+	private ValidationCacheService validationCacheService;
 
 	@Override
-	public List<RegionUIVO> getBoilersForRegionChecked() {
-		return boilerMapService.getRegionChecked();
+	public List<RegionUIVO> getBoilersForRegionChecked() throws NoSuchItemException {
+		return validationCacheService.getRegionChecked();
 	}
 
 }

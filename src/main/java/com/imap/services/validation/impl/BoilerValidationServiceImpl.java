@@ -7,7 +7,6 @@ import com.imap.uivo.BoilerUIVO;
 import com.imap.uivo.UIVO;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,18 +19,8 @@ import java.util.Map;
 public class BoilerValidationServiceImpl extends AbstractBoilerValidationService<BoilerUIVO> implements BoilerValidationService {
 
 	@Override
-	public Map<Integer, List<BoilerUIVO>> getBoilerMapChecked(Map<Integer, Integer> boilerTownMap,
-															  Map<Integer, Map<Integer, Boiler>> townMap) {
-		Map<Integer, List<BoilerUIVO>> boilerMapChecked = new HashMap<>();
-
-		boilerTownMap.forEach((boilerId, townId) -> boilerMapChecked.put(
-				boilerId,
-				checkBoiler(
-						townMap.get(townId).get(boilerId).getControlObjects()
-				)
-		));
-
-		return boilerMapChecked;
+	public List<BoilerUIVO> getBoilerChecked(Boiler boiler) {
+		return checkBoiler(boiler.getControlObjects());
 	}
 
 	@Override

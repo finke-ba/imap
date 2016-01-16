@@ -18,6 +18,6 @@ public interface RegionValidationService {
 	 *
 	 * @return список с проверенными данными котельных в регионе
 	 */
-	List<RegionUIVO> getRegionListChecked(Map<Integer, Map<Integer, Boiler>> townMap);
+	List<RegionUIVO> getRegionChecked(Map<Integer, Map<Integer, Boiler>> townMap);
 
 }

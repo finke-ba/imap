@@ -1,15 +1,14 @@
 package com.imap.services.impl;
 
-import com.imap.domain.Boiler;
+import com.imap.dao.TownInfoDao;
 import com.imap.exceptions.NoSuchItemException;
-import com.imap.services.BoilerMapService;
+import com.imap.services.ValidationCacheService;
 import com.imap.services.TownService;
 import com.imap.uivo.TownUIVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Сервис для проверки и получения информации о всех котельных в определенном городе.
@@ -19,32 +18,26 @@ import java.util.Map;
 @Service
 public class TownServiceImpl implements TownService {
 
-	/** Интерфейс доступа к данным по котельным. */
+	/** Интерфейс доступа к кэшированным данным по городам. */
 	@Autowired
-	protected BoilerMapService boilerMapService;
+	protected ValidationCacheService validationCacheService;
+
+	/** Интерфейс доступа к информации о городе. */
+	@Autowired
+	protected TownInfoDao townInfoDao;
 
 	@Override
 	public TownUIVO getTown(Integer id) throws NoSuchItemException {
-		TownUIVO townUIVO = new TownUIVO();
-		Map<Integer, Boiler> boilerMap = boilerMapService.getTownMap().get(id);
-
-		if (boilerMap == null || boilerMap.isEmpty()) {
+		TownUIVO townInfo = townInfoDao.getTownInfo(id);
+		if (townInfo == null) {
 			throw new NoSuchItemException();
 		}
-
-		Map.Entry<Integer, Boiler> boilerAPVEntry = boilerMap.entrySet().iterator().next();
-		townUIVO.setTownName(boilerAPVEntry.getValue().getTownName());
-
-		return townUIVO;
+		return townInfo;
 	}
 
 	@Override
 	public List<TownUIVO> getTownChecked(int id) throws NoSuchItemException {
-		Map<Integer, List<TownUIVO>> townChecked = boilerMapService.getTownChecked();
-		if (townChecked == null || townChecked.isEmpty()) {
-			throw new NoSuchItemException();
-		}
-		return townChecked.get(id);
+		return validationCacheService.getTownChecked(id);
 	}
 
 

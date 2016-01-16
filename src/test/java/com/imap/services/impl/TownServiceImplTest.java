@@ -1,18 +1,18 @@
 package com.imap.services.impl;
 
-import com.imap.domain.Boiler;
-import com.imap.domain.ControlObject;
+import com.imap.dao.TownInfoDao;
 import com.imap.services.validation.impl.AbstractBoilerValidationService;
 import com.imap.uivo.TownUIVO;
-import com.imap.uivo.BoilerUIVO;
-import com.imap.uivo.UIVO;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -20,8 +20,21 @@ import static org.testng.Assert.assertEquals;
  */
 public class TownServiceImplTest extends AbstractBoilerTest {
 
+	@Mock
+	private TownInfoDao townInfoDao;
+
 	@InjectMocks
 	private TownServiceImpl boilerTownService;
+
+	@BeforeMethod
+	public void setUp() throws Exception {
+		super.setUp();
+
+		TownUIVO townUIVO = new TownUIVO();
+		townUIVO.setTownName("Аксай");
+
+		when(this.townInfoDao.getTownInfo(1)).thenReturn(townUIVO);
+	}
 
 	@Test
 	public void testGetTown() throws Exception {

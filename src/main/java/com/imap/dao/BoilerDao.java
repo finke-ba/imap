@@ -7,16 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Интерфейс доступа к данным по котельным в БД.
+ * Интерфейс доступа к данным по котельным.
  *
  * @author Boris Finkelshtein <finke.ba@gmail.com>
  */
 public interface BoilerDao {
 
 	/**
-	 * Получает список всех котельных в регионе.
+	 * Получает список данных по всех котельных в регионе.
 	 *
-	 * @return список всех котельных в регионе
+	 * @return список данных по всех котельных в регионе
 	 */
 	List<BoilerRegion> getBoilerRegion();
 

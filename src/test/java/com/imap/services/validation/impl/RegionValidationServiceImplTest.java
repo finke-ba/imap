@@ -49,7 +49,7 @@ public class RegionValidationServiceImplTest extends AbstractBoilerValidationSer
 		regionUIVO.setParamStatus("Показания вышли за допустимые пределы");
 		regionUIVO.setParamStatusId(AbstractBoilerValidationService.PARAM_STATUS_RED);
 
-		List<RegionUIVO> boilersForRegionCheckExpected = regionValidationService.getRegionListChecked(getTownMap());
+		List<RegionUIVO> boilersForRegionCheckExpected = regionValidationService.getRegionChecked(getTownMap());
 
 		assertEquals(boilersForRegionCheckActual.get(0).getTownId(), boilersForRegionCheckExpected.get(0).getTownId());
 		assertEquals(boilersForRegionCheckActual.get(0).getParamStatus(), boilersForRegionCheckExpected.get(0).getParamStatus());

@@ -1,9 +1,7 @@
 package com.imap.services.validation.impl;
 
 import com.imap.domain.ControlObject;
-import com.imap.services.BoilerMapService;
 import com.imap.uivo.UIVO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

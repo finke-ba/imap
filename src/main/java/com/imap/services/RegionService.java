@@ -1,5 +1,6 @@
 package com.imap.services;
 
+import com.imap.exceptions.NoSuchItemException;
 import com.imap.uivo.RegionUIVO;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface RegionService {
 	 *
 	 * @return список проверенных городов
 	 */
-	List<RegionUIVO> getBoilersForRegionChecked();
+	List<RegionUIVO> getBoilersForRegionChecked() throws NoSuchItemException;
 
 }

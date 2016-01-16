@@ -14,13 +14,11 @@ import java.util.Map;
 public interface BoilerValidationService {
 
 	/**
-	 * Проверяет данные приборов учета на всех котельных.
+	 * Проверяет данные приборов учета на котельной.
 	 *
-	 * @param boilerTownMap соотношение идентификатора котельной к идентификатору города
-	 * @param townMap       соотношение идентиикатора города к котельным в городе
-	 * @return соотношение идентификатора котельной к списку с проверенными данными котельной
+	 * @param boiler данные по котельной
+	 * @return список с проверенными данными котельной
 	 */
-	Map<Integer, List<BoilerUIVO>> getBoilerMapChecked(Map<Integer, Integer> boilerTownMap,
-													   Map<Integer, Map<Integer, Boiler>> townMap);
+	List<BoilerUIVO> getBoilerChecked(Boiler boiler);
 
 }

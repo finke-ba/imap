@@ -2,20 +2,14 @@ package com.imap.services.validation.impl;
 
 import com.imap.domain.Boiler;
 import com.imap.domain.ControlObject;
-import com.imap.services.BoilerMapService;
-import com.imap.uivo.BoilerUIVO;
-import com.imap.uivo.RegionUIVO;
+import com.imap.services.ValidationCacheService;
 import com.imap.uivo.TownUIVO;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.sql.Timestamp;
 import java.util.*;
-
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
 
 /**
  * @author Boris Finkelshtein <finke.ba@gmail.com>
@@ -23,7 +17,7 @@ import static org.testng.Assert.*;
 public class AbstractBoilerValidationServiceTest {
 
 	@Mock
-	protected BoilerMapService boilerMapService;
+	protected ValidationCacheService validationCacheService;
 
 	@BeforeMethod
 	public void setUp() throws Exception {

@@ -1,18 +1,18 @@
 package com.imap.services.impl;
 
-import com.imap.domain.Boiler;
-import com.imap.domain.ControlObject;
+import com.imap.dao.BoilerInfoDao;
 import com.imap.services.validation.impl.AbstractBoilerValidationService;
 import com.imap.uivo.TownUIVO;
 import com.imap.uivo.BoilerUIVO;
-import com.imap.uivo.UIVO;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -20,8 +20,24 @@ import static org.testng.Assert.assertEquals;
  */
 public class BoilerServiceImplTest extends AbstractBoilerTest {
 
+	@Mock
+	private BoilerInfoDao boilerInfoDao;
+
 	@InjectMocks
 	private BoilerServiceImpl boilerService;
+
+	@BeforeMethod
+	public void setUp() throws Exception {
+		super.setUp();
+
+		TownUIVO townUIVO = new TownUIVO();
+		townUIVO.setBoilerName("Котельная №1");
+		townUIVO.setBoilerAddress("ул.Дружбы, 7-б г.Аксай");
+		townUIVO.setTownName("Аксай");
+		townUIVO.setTownId(1);
+
+		when(this.boilerInfoDao.getBoilerInfo(1)).thenReturn(townUIVO);
+	}
 
 	@Test
 	public void testGetBoiler() throws Exception {

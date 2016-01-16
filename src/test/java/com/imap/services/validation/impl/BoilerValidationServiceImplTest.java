@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.testng.Assert.*;
 
@@ -32,8 +31,8 @@ public class BoilerValidationServiceImplTest extends AbstractBoilerValidationSer
 		boilerUIVOActual.setParamStatusId(AbstractBoilerValidationService.PARAM_STATUS_GREEN);
 		boilerUIVOActual.setParamStatus("Предел 52.386");
 
-		Map<Integer, List<BoilerUIVO>> boilerUIVOMapExpected = boilerValidationService.getBoilerMapChecked(getBoilerTownMap(), getTownMap());
-		BoilerUIVO boilerUIVOExpected = boilerUIVOMapExpected.get(1).get(0);
+		List<BoilerUIVO> boilerUIVOListExpected = boilerValidationService.getBoilerChecked(getTownMap().get(1).get(1));
+		BoilerUIVO boilerUIVOExpected = boilerUIVOListExpected.get(0);
 
 		assertEquals(boilerUIVOActual.getParamName(), boilerUIVOExpected.getParamName());
 		assertEquals(boilerUIVOActual.getParamValue(), boilerUIVOExpected.getParamValue());
