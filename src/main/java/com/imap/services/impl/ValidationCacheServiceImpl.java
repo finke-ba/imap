@@ -52,7 +52,7 @@ public class ValidationCacheServiceImpl implements ValidationCacheService {
 	private RegionValidationService regionValidationService;
 
 	/** Кэш с проверенными данными по котельной.*/
-	private LoadingCache<Integer, List<BoilerUIVO>> boilerCache =
+	private final LoadingCache<Integer, List<BoilerUIVO>> boilerCache =
 			CacheBuilder.newBuilder()
 					.expireAfterAccess(1, TimeUnit.MINUTES)
 					.build(new CacheLoader<Integer, List<BoilerUIVO>>() {
@@ -65,7 +65,7 @@ public class ValidationCacheServiceImpl implements ValidationCacheService {
 					});
 
 	/** Кэш с проверенными данными по городу.*/
-	private LoadingCache<Integer, List<TownUIVO>> townCache =
+	private final LoadingCache<Integer, List<TownUIVO>> townCache =
 			CacheBuilder.newBuilder()
 					.expireAfterAccess(1, TimeUnit.MINUTES)
 					.build(new CacheLoader<Integer, List<TownUIVO>>() {
@@ -77,7 +77,7 @@ public class ValidationCacheServiceImpl implements ValidationCacheService {
 					});
 
 	/** Кэш с проверенными данными по региону.*/
-	private LoadingCache<Integer, List<RegionUIVO>> regionCache =
+	private final LoadingCache<Integer, List<RegionUIVO>> regionCache =
 			CacheBuilder.newBuilder()
 					.expireAfterAccess(1, TimeUnit.MINUTES)
 					.build(new CacheLoader<Integer, List<RegionUIVO>>() {
@@ -89,7 +89,7 @@ public class ValidationCacheServiceImpl implements ValidationCacheService {
 					});
 
 	/** Кэш с данными по региону.*/
-	private LoadingCache<Integer, HashMap<Integer, HashMap<Integer, Boiler>>> boilerRegionCache =
+	private final LoadingCache<Integer, HashMap<Integer, HashMap<Integer, Boiler>>> boilerRegionCache =
 			CacheBuilder.newBuilder()
 					.expireAfterAccess(1, TimeUnit.MINUTES)
 					.build(new CacheLoader<Integer, HashMap<Integer, HashMap<Integer, Boiler>>>() {
