@@ -1,6 +1,6 @@
 package com.imap.uivo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UIVO implements Serializable {
 
 	private Integer paramStatusId;
