@@ -22,4 +22,12 @@ public class TownUIVO extends UIVO {
 
 	private String boilerAddress;
 
+	private String coordX;
+
+	private String coordY;
+
+	private String coordXName;
+
+	private String coordYName;
+
 }
