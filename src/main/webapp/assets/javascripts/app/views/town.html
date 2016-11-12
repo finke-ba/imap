@@ -1,102 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Boiler towns</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			var url = window.location.origin;
-			var townId = getUrlParameter('townId');
+<div class="container-fluid" ng-controller="townController">
+	<div class='container'>
+		<div class='row vertical-offset-100'>
+			<div class='col-md-10 col-md-offset-1'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h3 class='panel-title'>Котельные в городе</h3>
+					</div>
 
-			$.ajax({
-				url: url + "/imap/town/" + townId
-			}).then(function (data) {
-				var townName = data.townName;
-				$('.breadcrumb li:nth-child(2)').text(townName);
-				$('.panel-title').text("Котельные в городе " + townName);
-			});
+					<ul class='breadcrumb'>
+						<li><!--suppress HtmlUnknownAnchorTarget -->
+							<a href='#/region'>Карта</a></li>
+						<li class='active'></li>
+					</ul>
 
-			$.ajax({
-				url: url + "/imap/town/" + townId + "/check"
-			}).then(function (data) {
-				var trHTML = '';
-				$.each(data, function (i, item) {
-					trHTML += getTr(item.paramStatusId) + "<td class='hidden'>" +
-							item.boilerId + '</td><td>' +
-							item.boilerName + '</td><td>' +
-							item.boilerAddress + '</td><td>' +
-							item.paramStatus + '</td></tr>';
-				});
-				$('#towns_table').append(trHTML);
-				clickRowTableEvent();
-			});
+					<div class='panel-body'>
 
-		});
-
-		function getTr(paramStatusId) {
-			if (paramStatusId == 1) {
-				return "<tr class='click-row success' data-href='boiler.html?boilerId='>";
-			} else if (paramStatusId == 2) {
-				return "<tr class='warning'>";
-			} else if (paramStatusId == 3) {
-				return "<tr class='click-row danger' data-href='boiler.html?boilerId='>";
-			}
-		}
-
-		function clickRowTableEvent() {
-			$(".click-row").click(function () {
-				window.document.location = $(this).data("href") + $(this).find("td:first").html();
-			});
-		}
-
-		function getUrlParameter(sParam) {
-			var sPageURL = window.location.search.substring(1);
-			var sURLVariables = sPageURL.split('&');
-			for (var i = 0; i < sURLVariables.length; i++) {
-				var sParameterName = sURLVariables[i].split('=');
-				if (sParameterName[0] == sParam) {
-					return sParameterName[1];
-				}
-			}
-		}
-
-	</script>
-</head>
-<body>
-<div class='container'>
-	<div class='row vertical-offset-100'>
-		<div class='col-md-10 col-md-offset-1'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					<h3 class='panel-title'>Котельные в городе</h3>
-				</div>
-
-				<ul class='breadcrumb'>
-					<li><a href='index.html'>Карта</a></li>
-					<li class='active'></li>
-				</ul>
-
-				<div class='panel-body'>
-
-					<div class='table-responsive'>
-						<table id="towns_table" class='table table-hover'>
-							<thead>
-							<tr>
-								<th class='hidden'>id</th>
-								<th>Название котельной</th>
-								<th>Адрес</th>
-								<th>Показания приборов</th>
-							</tr>
-							</thead>
-						</table>
+						<div class='table-responsive'>
+							<table id="towns_table" class='table table-hover'>
+								<thead>
+								<tr>
+									<th class='hidden'>id</th>
+									<th>Название котельной</th>
+									<th>Адрес</th>
+									<th>Показания приборов</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-</body>
-</html>
