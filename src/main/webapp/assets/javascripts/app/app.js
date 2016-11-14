@@ -15,6 +15,6 @@ app.config(function($routeProvider){
         controller: 'boilerController'
       })
       .otherwise(
-          { redirectTo: '/'}
+          { redirectTo: '/region'}
       );
 });
