@@ -25,6 +25,12 @@
 									<th>Показания приборов</th>
 								</tr>
 								</thead>
+								<tr ng-repeat="boiler in boilersInTown" ng-class="getStatusClass(boiler.paramStatusId)" ng-click="clickOnBoiler(boiler)">
+									<td class='hidden'>{{boiler.boilerId}} </td>
+									<td>{{boiler.boilerName}}</td>
+									<td>{{boiler.boilerAddress}}</td>
+									<td>{{boiler.paramStatus}}</td>
+								</tr>
 							</table>
 						</div>
 					</div>
