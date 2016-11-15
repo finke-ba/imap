@@ -4,10 +4,17 @@ angular.module("imap").controller("boilerController", function ($scope, $http, $
   $scope.controlObjectsInBoiler = [];
 
   getBoilerChecked();
+  getBoilerInfo();
 
   function getBoilerChecked() {
     $http.get('/imap/boiler/'+ $scope.boilerId + "/check").then(function (response) {
       $scope.controlObjectsInBoiler = response.data;
+    });
+  }
+
+  function getBoilerInfo() {
+    $http.get('/imap/boiler/'+ $scope.boilerId).then(function (response) {
+      $scope.boilerInfo = response.data;
     });
   }
 

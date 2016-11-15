@@ -4,10 +4,17 @@ angular.module("imap").controller("townController", function ($scope, $http, $lo
 	$scope.boilersInTown = [];
 
 	getTownChecked();
+	getTownInfo();
 
 	function getTownChecked() {
 		$http.get('/imap/town/'+ $scope.townId + "/check").then(function (response) {
 			$scope.boilersInTown = response.data;
+		});
+	}
+
+	function getTownInfo() {
+		$http.get('/imap/town/'+ $scope.townId).then(function (response) {
+			$scope.townInfo = response.data;
 		});
 	}
 
@@ -24,7 +31,7 @@ angular.module("imap").controller("townController", function ($scope, $http, $lo
 	};
 
 	$scope.clickOnBoiler = function(boiler) {
-		if (boiler.paramStatusId == 1 || boiler.paramStatusId == 2) {
+		if (boiler.paramStatusId == 1 || boiler.paramStatusId == 3) {
 			$location.path("/boiler").search('boilerId=' + boiler.boilerId);
 		}
 	};

@@ -4,13 +4,13 @@
 			<div class='col-md-10 col-md-offset-1'>
 				<div class='panel panel-default'>
 					<div class='panel-heading'>
-						<h3 class='panel-title'>Показания котельной boilerName по адресу boilerAddress</h3>
+						<h3 class='panel-title'>Показания котельной {{boilerInfo.boilerName}} по адресу {{boilerInfo.boilerAddress}}</h3>
 					</div>
 
 					<ul class='breadcrumb'>
 						<li><!--suppress HtmlUnknownAnchorTarget --><a href='#/region'>Карта</a></li>
-						<li><a>townId</a></li>
-						<li class='active'>boilerName</li>
+						<li><a href='#/town?townId={{boilerInfo.townId}}'>{{boilerInfo.townName}}</a></li>
+						<li class='active'>{{boilerInfo.boilerName}}</li>
 					</ul>
 
 					<div class='panel-body'>
