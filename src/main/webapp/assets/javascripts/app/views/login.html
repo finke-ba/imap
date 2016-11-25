@@ -1,0 +1,23 @@
+<div class="container">
+  <form class="form-signin" ng-submit="login()" ng-click="resetStatus()">
+
+    <h2 class="form-signin-heading">Войдите в систему</h2>
+
+    <label for="inputUsername" class="sr-only">Имя пользователя</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Имя" required="" autofocus="" ng-model="username">
+
+    <label for="inputPassword" class="sr-only">Пароль</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="" ng-model="password">
+
+    <div class="checkbox">
+      <label> <input type="checkbox" ng-model="remember"> Запомнить меня </label>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+
+    <div class="form-group" ng-show="loginError">
+      <div class="alert alert-danger" role="alert">Ошибка: неверный логин или пароль</div>
+    </div>
+
+  </form>
+</div>

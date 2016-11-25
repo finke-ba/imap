@@ -30,10 +30,9 @@ angular.module("imap").controller("boilerController", function ($scope, $http, $
     }
   };
 
-  $scope.formatDate = function(date){
-    var date = date.split("-").join("/");
-    var dateOut = new Date(date);
-    return dateOut;
+  $scope.formatDate = function(date) {
+    var splitDate = date.split("-").join("/");
+    return new Date (splitDate);
   };
 
 });

@@ -615,7 +615,11 @@ INSERT INTO actual_param_values VALUES
   (510, '45.36', '2013-11-06 00:26:34', 83, 'T01', '^C', 156), (515, '40.46', '2013-11-06 00:26:34', 83, 'T02', '^C', 156),
   (520, '20.38', '2013-11-06 00:26:34', 83, 'T03', '^C', 156);
 
--- ALTER TABLE actual_param_values ADD FOREIGN KEY (id_co) REFERENCES control_objects(id) ;
--- ALTER TABLE actual_param_values SET REFERENTIAL_INTEGRITY FALSE;
+CREATE TABLE users (
+  username   VARCHAR(32),
+  password   VARCHAR(60),
+  authority  VARCHAR(32)
+);
 
--- ALTER USER SA SET PASSWORD 'admin'
+INSERT INTO users VALUES
+  ('user', '$2a$04$ZQi79JxMNmtb41hNvZ1JG.5fHqSWaC0nbexgcprF.MAnE9Yxm6Ok.', 'ROLE_USER');
