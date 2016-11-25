@@ -20,12 +20,16 @@ import java.util.List;
 public class BoilerServiceImpl implements BoilerService {
 
 	/** Интерфейс доступа к кэшированным данным по котельным. */
-	@Autowired
-	protected ValidationCacheService validationCacheService;
+	private final ValidationCacheService validationCacheService;
 
 	/** Интерфейс доступа к информации о котельной. */
+	private final BoilerInfoDao boilerInfoDao;
+
 	@Autowired
-	protected BoilerInfoDao boilerInfoDao;
+	public BoilerServiceImpl (final ValidationCacheService validationCacheService, final BoilerInfoDao boilerInfoDao) {
+		this.validationCacheService = validationCacheService;
+		this.boilerInfoDao = boilerInfoDao;
+	}
 
 	@Override
 	public TownUIVO getBoiler(int id) throws NoSuchItemException {
