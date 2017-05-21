@@ -1,0 +1,30 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:b="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security.xsd">
+
+  <http>
+    <intercept-url pattern="/assets/javascripts/app/app.js" access="permitAll" />
+    <intercept-url pattern="/assets/javascripts/app/controllers/*" access="permitAll" />
+    <intercept-url pattern="/assets/javascripts/app/views/index.html" access="permitAll" />
+    <intercept-url pattern="/assets/javascripts/app/views/login.html" access="permitAll" />
+    <intercept-url pattern="/assets/javascripts/app/services/*" access="permitAll" />
+    <intercept-url pattern="/assets/javascripts/app/views/*" access="hasRole('USER')" />
+    <http-basic entry-point-ref="http403ForbiddenEntryPoint" />
+    <csrf token-repository-ref="customCsrfTokenRepository" />
+    <!--suppress SpringModelInspection -->
+    <custom-filter after="CSRF_FILTER" ref="customCsrfHeaderFilter" />
+    <remember-me key="IMAP_REMEMBER_TOKEN" services-ref="rememberMeServices" />
+  </http>
+
+  <authentication-manager alias="authenticationManager">
+    <authentication-provider user-service-ref="userDetailsServiceStub">
+      <!--suppress SpringModelInspection -->
+      <password-encoder hash="bcrypt" />
+    </authentication-provider>
+  </authentication-manager>
+
+</b:beans>

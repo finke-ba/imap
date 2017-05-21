@@ -1,0 +1,41 @@
+<div class="container-fluid">
+	<div class='container'>
+		<div class='row vertical-offset-100'>
+			<div class='col-md-10 col-md-offset-1'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h3 class='panel-title'>Показания котельной {{boilerInfo.boilerName}} по адресу {{boilerInfo.boilerAddress}}</h3>
+					</div>
+
+					<ul class='breadcrumb'>
+						<li><!--suppress HtmlUnknownAnchorTarget --><a href='#/region'>Карта</a></li>
+						<li><!--suppress HtmlUnknownAnchorTarget --><a href='#/town?townId={{boilerInfo.townId}}'>{{boilerInfo.townName}}</a></li>
+						<li class='active'>{{boilerInfo.boilerName}}</li>
+					</ul>
+
+					<div class='panel-body'>
+						<div class='table-responsive'>
+							<table id="boiler_table" class='table table-hover'>
+								<thead>
+									<tr>
+										<th>Название параметра</th>
+										<th>Значение параметра</th>
+										<th>Время</th>
+										<th>Причина</th>
+									</tr>
+								</thead>
+								<tr ng-repeat="controlObject in controlObjectsInBoiler" ng-class="getStatusClass(controlObject.paramStatusId)">
+									<td class='hidden'>{{controlObject.boilerId}} </td>
+									<td>{{controlObject.paramName}}</td>
+									<td>{{controlObject.paramValue}}</td>
+									<td>{{formatDate(controlObject.paramDate) | date : 'MM-dd-yyyy HH:mm:ss'}}</td>
+									<td>{{controlObject.paramStatus}}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

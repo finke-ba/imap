@@ -19,12 +19,16 @@ import java.util.List;
 public class TownServiceImpl implements TownService {
 
 	/** Интерфейс доступа к кэшированным данным по городам. */
-	@Autowired
-	protected ValidationCacheService validationCacheService;
+	private final ValidationCacheService validationCacheService;
 
 	/** Интерфейс доступа к информации о городе. */
+	private final TownInfoDao townInfoDao;
+
 	@Autowired
-	protected TownInfoDao townInfoDao;
+	public TownServiceImpl (final ValidationCacheService validationCacheService, final TownInfoDao townInfoDao) {
+		this.validationCacheService = validationCacheService;
+		this.townInfoDao = townInfoDao;
+	}
 
 	@Override
 	public TownUIVO getTown(Integer id) throws NoSuchItemException {

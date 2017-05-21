@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="imap">
+  <head>
+    <meta charset="UTF-8">
+    <title>Boiler Map</title>
+    <script src="webjars/angularjs/1.5.8/angular.js"></script>
+    <script src="webjars/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="webjars/angularjs/1.5.8/angular-route.js"></script>
+    <script src="webjars/angularjs/1.5.8/angular-cookies.js"></script>
+    <script src="webjars/md5/0.3.0/build/md5.min.js"></script>
+    <link rel="stylesheet" href="./webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/stylesheets/imap.css">
+
+    <script src="/assets/javascripts/app/app.js"></script>
+    <script src="/assets/javascripts/app/controllers/regionController.js"></script>
+    <script src="/assets/javascripts/app/controllers/townController.js"></script>
+    <script src="/assets/javascripts/app/controllers/boilerController.js"></script>
+    <script src="/assets/javascripts/app/controllers/loginController.js"></script>
+    <script src="/assets/javascripts/app/services/authService.js"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="pull-right" ng-controller="loginController">
+        <a class="navbar-brand" href="" ng-click="logout()" ng-show="isLogin"> Выход </a>
+      </div>
+    </div>
+
+    <div ng-view></div>
+  </body>
+
+</html>
